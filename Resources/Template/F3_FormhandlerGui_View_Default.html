@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>MyPackage Example Template</title>
+</head>
+
+<body>
+	<h1>MyPackage Example Template</h1>
+
+	<h2>TEMPLATE_LIST</h2>
+
+	<!-- ###TEMPLATE_FORMFORM### begin
+		This is the template to display a list of terms
+	-->
+	<div class="fhguiTabContent">
+		<!-- ###ITEM### begin -->
+				<div>###LLL:tab_general### <input type="text" value="###FORM_NAME###" name="form_name" /></div>
+				<div>###ADDRESS###</div>
+				<div>###ZIP### ###CITY###</div>
+		<!-- ###ITEM### end -->
+	</div>
+	<!-- ###TEMPLATE_FORMFORM### end -->
+
+	<h2>TEMPLATE_SINGLE</h2>
+
+	<!-- ###TEMPLATE_SINGLE### begin
+		This is the template to display a single term
+	-->
+	<dl class="mypackage-single">
+		<!-- ###ITEM### begin-->		
+		<dt>###FIRST_NAME### ###LAST_NAME######</dt>
+		<dd>###ADDRESS###</dd>
+		<!-- ###ITEM### end-->
+	</dl>
+	<!-- ###TEMPLATE_SINGLE### end -->
+
+
+	<!-- ###TEMPLATE_NO_RESULT### begin
+		This is the template to display a single term
+	-->
+	###NO_RESULT###
+	<!-- ###TEMPLATE_NO_RESULT### end -->
+</body>
+</html>
