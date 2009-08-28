@@ -22,9 +22,9 @@ $TCA['tx_formhandlergui_forms'] = array (
 
 
 if (TYPO3_MODE == 'BE') {	
-	t3lib_extMgm::addModulePath('tools_txformhandlerguiM1', t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Controller/Module/');
+	t3lib_extMgm::addModulePath('tools_txformhandlerguiM1', t3lib_extMgm::extPath($_EXTKEY) . 'mod/');
 		
-	t3lib_extMgm::addModule('tools', 'txformhandlerguiM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Controller/Module/');
+	t3lib_extMgm::addModule('tools', 'txformhandlerguiM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'mod/');
 }
 
 t3lib_extMgm::addTypoScriptSetup('plugin.tx_formhandler.includeLibs = typo3conf/ext/formhandlergui/pi/class.tx_formhandler.php');

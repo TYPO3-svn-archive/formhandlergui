@@ -104,7 +104,7 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 	
 			// initialize doc
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('formhandlergui') . 'Resources/HTML/backend/mod_template.html');
+		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('formhandlergui') . 'Resources/Template/Module/mod_template.html');
 		$this->doc->backPath = $BACK_PATH;
 		$docHeaderButtons = $this->getButtons();
 	

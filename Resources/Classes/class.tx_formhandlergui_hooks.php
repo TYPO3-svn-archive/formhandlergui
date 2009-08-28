@@ -6,7 +6,7 @@ class tx_formhandlergui_hooks {
 
 		if ($func == 'tx_dynaflex_formhandler->addFields_predefined') {
 			
-			include_once(t3lib_extMgm::extPath('formhandlergui') . '/Classes/Utils/class.tx_dynaflex_formhandlergui.php');
+			include_once(t3lib_extMgm::extPath('formhandlergui') . '/Resources/Classes/class.tx_dynaflex_formhandlergui.php');
 			
 			$dataStructArray
 			['sheets']
