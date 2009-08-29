@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Creates the form tree.
+ * Creates and prints the navframe page
  *
  * $Id$
  *
@@ -33,126 +33,19 @@ unset($MCONF);
 require_once('conf.php');
 require_once($BACK_PATH . 'init.php');
 require_once($BACK_PATH . 'template.php');
-require_once(PATH_t3lib.'class.t3lib_treeview.php');
 require_once(PATH_t3lib . 'class.t3lib_scbase.php');
 
 $BE_USER->modAccess($MCONF,1);
 
 $LANG->includeLLFile('EXT:formhandlergui/Resources/Language/locallang.xml');
+
+require_once('../Resources/Classes/class.tx_formhandlergui_formtree.php');
+
 /**
- * Generates the tree
- *
- * @author Christian Opitz <co@netzelf.de>
+ * Creates and prints the navframe page
+ * 
+ * @author Christian Opitz <co@netzelf.de
  */
-class tx_formhandlergui_treeview extends t3lib_treeview {
-
-	var $fieldArray = array('uid','pid','title','multiple','multiple_forms');
-	var $setRecs = 0;
-
-	public function init() {
-		global $BACK_PATH;
-
-		$this->backPath = $BACK_PATH;
-		
-		$this->BE_USER = $GLOBALS['BE_USER'];	// Setting BE_USER by default
-		$this->titleAttrib = 'title';	// Setting title attribute to use.
-		$this->title = 'Alle Formulare';
-		$this->treeName='forms_tree';
-		$this->table = 'tx_formhandlergui_forms';
-		$this->parentField = 'multiple_forms';
-		$this->orderByFields = 'multiple, title';
-		$this->expandFirst = true;
-		$this->expandAll = 1;
-		$this->MOUNTS = array(
-			'formhandlerforms' => '0'
-		);
-		
-		$this->setTreeName();
-
-		if($this->table) {
-			t3lib_div::loadTCA($this->table);
-		}
-	}
-	
-	/**
-	 * Returns the root icon for a tree/mountpoint (defaults to the globe)
-	 *
-	 * @param	array		Record for root.
-	 * @return	string		Icon image tag.
-	 */
-	function getRootIcon($rec) {
-		return $this->wrapIcon('<img src="'.$this->backPath.t3lib_extMgm::extRelPath('formhandlergui').'Resources/Images/icon_forms.gif" width="18" height="16"  alt="" />',$rec);
-	}
-	
-	/**
-	 * Get icon for the row.
-	 * If $this->iconPath and $this->iconName is set, try to get icon based on those values.
-	 *
-	 * @param	array		Item row.
-	 * @return	string		Image tag.
-	 */
-	function getIcon($row) {
-		$src = $this->backPath.t3lib_extMgm::extRelPath('formhandlergui').'Resources/Images/icon_';
-		
-		if ($row['multiple']) {
-			$src .= 'multistepform.gif';
-		} elseif ($this->multiStep) {
-			$src .= 'stepform.gif';
-		} else {
-			$src .= 'form.gif';
-		}
-		
-		
-		$icon = '<img src="'.$src.'" width="18" height="16" alt=""'.($this->showDefaultTitleAttribute ? ' title="UID: '.$row['uid'].'"':'').' />';
-		
-		return $this->wrapIcon($icon,$row);
-	}
-	
-	function getDataInit($parentId,$subCSSclass='') {
-		if ($parentId == 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				implode(',',$this->fieldArray),
-				$this->table,
-				'uid > 0 '.t3lib_BEfunc::deleteClause($this->table).
-				t3lib_BEfunc::versioningPlaceholderClause($this->table).
-				$this->clause,	// whereClauseMightContainGroupOrderBy
-				'',
-				$this->orderByFields
-			);
-			
-			$this->multiStep = false;
-			
-			return $res;
-		}else{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				$this->parentField,
-				$this->table,
-				"multiple_forms <> '' AND deleted = 0 AND uid=".$GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table)
-			);
-			
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$multiple = $row['multiple_forms'];
-				
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				
-				$this->multiStep = true;
-				
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					implode(',',$this->fieldArray),
-					$this->table,
-					'uid IN ('.trim($multiple).')'.
-					t3lib_BEfunc::deleteClause($this->table).
-					t3lib_BEfunc::versioningPlaceholderClause($this->table).
-					$this->clause,	// whereClauseMightContainGroupOrderBy
-					'',
-					$this->orderByFields
-				);
-			}
-			return $res;
-		}
-	}
-}
-
 class tx_formhandlergui_navframe extends t3lib_SCbase {
 	
 	/**
@@ -166,12 +59,20 @@ class tx_formhandlergui_navframe extends t3lib_SCbase {
 	public $doc = '';
 	
 	function __construct() {
-		$this->treeObj = t3lib_div::makeInstance('tx_formhandlergui_treeview');
+		$this->treeObj = t3lib_div::makeInstance('tx_formhandlergui_formtree');
 		$this->treeObj->init();
 	}
 	
-	function main() {
-		global $BACK_PATH;
+	function initPage() {
+		global $BACK_PATH, $BE_USER;
+		
+		// Setting highlight mode:
+		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
+
+			// If highlighting is active, define the CSS class for the active item depending on the workspace
+		if ($this->doHighlight) {
+			$hlClass = ($BE_USER->workspace === 0 ? 'active' : 'active active-ws wsver'.$BE_USER->workspace);
+		}
 		
 		$this->doc = t3lib_div::makeInstance('template');
 		
@@ -182,6 +83,38 @@ class tx_formhandlergui_navframe extends t3lib_SCbase {
 		
 		$this->doc->setModuleTemplate('templates/alt_db_navframe.html');
 		$this->doc->docType  = 'xhtml_trans';
+
+			// get HTML-Template
+
+
+			// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code
+		$this->doc->getDragDropCode('pages');
+		$this->doc->getContextMenuCode();
+		$this->doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js?load=effects');
+
+		$this->doc->JScode .= $this->doc->wrapScriptTags(
+		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
+		// setting prefs for pagetree and drag & drop
+		'.($this->doHighlight ? 'Tree.highlightClass = "'.$hlClass.'";' : '').'
+
+		// Function, loading the list frame from navigation tree:
+		function jumpTo(id, linkObj, highlightID, bank)	{ //
+			
+			parent.list_frame.location.href=\''.$BACK_PATH.'alt_doc.php?returnUrl='.$returnUrl.'&edit[tx_formhandlergui_forms][\'+id+\']=edit\';
+
+			'.($this->doHighlight ? 'Tree.highlightActiveItem("typo3-tree", highlightID + "_" + bank);' : '').'
+			'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
+			return false;
+		}
+		'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').
+
+			($this->hasFilterBox ? 'var TYPO3PageTreeFilter = new PageTreeFilter();' : '') . '
+
+		');
+	}
+	
+	function main() {
+		
 		
 		$tree = $this->treeObj->getBrowsableTree();
 		$this->content .= '<div id="PageTreeDiv">'.$tree.'</div>';
@@ -238,6 +171,7 @@ class tx_formhandlergui_navframe extends t3lib_SCbase {
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$SOBE = t3lib_div::makeInstance('tx_formhandlergui_navframe');
 	$SOBE->init();
+	$SOBE->initPage();
 	$SOBE->main();
 	$SOBE->printContent();
 }
