@@ -10,7 +10,7 @@ CREATE TABLE tx_formhandlergui_forms (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	fe_group int(11) DEFAULT '0' NOT NULL,
-	formname tinytext,
+	title tinytext,
 	config mediumtext,
 	
 	PRIMARY KEY (uid),

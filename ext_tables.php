@@ -5,7 +5,7 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_formhandlergui_forms'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms',		
-		'label'     => 'formname',	
+		'label'     => 'title',	
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',

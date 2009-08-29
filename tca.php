@@ -4,7 +4,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $TCA['tx_formhandlergui_forms'] = array (
 	'ctrl' => $TCA['tx_formhandlergui_forms']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'hidden,fe_group,formname,config'
+		'showRecordFieldList' => 'hidden,fe_group,title,config'
 	),
 	'feInterface' => $TCA['tx_formhandlergui_forms']['feInterface'],
 	'columns' => array (
@@ -30,9 +30,9 @@ $TCA['tx_formhandlergui_forms'] = array (
 				'foreign_table' => 'fe_groups'
 			)
 		),
-		'formname' => array (		
+		'title' => array (		
 			'exclude' => 1,		
-			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.formname',		
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.title',		
 			'config' => array (
 				'type' => 'input',	
 				'size' => '30',	
@@ -51,7 +51,7 @@ $TCA['tx_formhandlergui_forms'] = array (
 		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;1;;1-1-1, formname, config')
+		'0' => array('showitem' => 'hidden;;1;;1-1-1, title, config')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'fe_group')

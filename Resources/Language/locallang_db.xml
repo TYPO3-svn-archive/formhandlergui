@@ -7,11 +7,11 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_formhandlergui_forms">Formhandler Forms</label>
-			<label index="tx_formhandlergui_forms.formname">form name</label>
+			<label index="tx_formhandlergui_forms.title">form name</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tx_formhandlergui_forms">Formhandler Formulare</label>
-			<label index="tx_formhandlergui_forms.formname">Formularname</label>
+			<label index="tx_formhandlergui_forms.title">Formularname</label>
 		</languageKey>
 	</data>
 </T3locallang>
