@@ -30,7 +30,7 @@
  * @package FormhandlerGui
  * @subpackage Plugin
  * @author Christian Opitz <co@netzelf.de>
- * @version $Id Revision Date Author$
+ * @version $ $Id$ $Revision$ $Date$ $Author$ $
  * tags
  */
 
