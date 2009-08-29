@@ -10,6 +10,6 @@ $MCONF['access'] = 'user,group';
 
 $MCONF['navFrameScript'] = 'navframe.php';
 
-$MLANG['default']['tabs_images']['tab'] = '../Resources/Gfx/moduleicon.gif';
+$MLANG['default']['tabs_images']['tab'] = '../Resources/Images/icon_forms.gif';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:formhandlergui/Resources/Language/locallang_mod.xml';
 ?>
