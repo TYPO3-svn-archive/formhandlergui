@@ -9,6 +9,8 @@ $TCA['tx_formhandlergui_forms'] = array (
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
+		'type' => 'type',	
+		'origUid' => 't3_origuid',
 		'default_sortby' => 'ORDER BY crdate',	
 		'delete' => 'deleted',	
 		'enablecolumns' => array (		
@@ -17,6 +19,7 @@ $TCA['tx_formhandlergui_forms'] = array (
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'Resources/Images/icon_form.gif',
+		'dividers2tabs' => 2
 	),
 );
 

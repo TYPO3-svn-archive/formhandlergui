@@ -7,7 +7,22 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_formhandlergui_forms">Formhandler Forms</label>
-			<label index="tx_formhandlergui_forms.title">form name</label>
+			<label index="tx_formhandlergui_forms.title">Form title</label>
+			<label index="tx_formhandlergui_forms.type.I.0">default</label>
+			<label index="tx_formhandlergui_forms.type.I.1">MultiStep</label>
+			<label index="tx_formhandlergui_forms.type">Form type</label>
+			<label index="tx_formhandlergui_forms.method.I.0">POST</label>
+			<label index="tx_formhandlergui_forms.method.I.1">GET</label>
+			<label index="tx_formhandlergui_forms.method">Method</label>
+			<label index="tx_formhandlergui_forms.prefix">Prefix</label>
+			<label index="tx_formhandlergui_forms.enable_email">Email results</label>
+			<label index="tx_formhandlergui_forms.enable_db">Enable DB storage</label>
+			<label index="tx_formhandlergui_forms.debug">Debug</label>
+			<label index="tx_formhandlergui_forms.tabs.fields">Fields</label>
+			<label index="tx_formhandlergui_forms.rows">Rows</label>
+			<label index="tx_formhandlergui_forms.cols">Columns</label>
+			<label index="tx_formhandlergui_forms.fields">Fields</label>
+			<label index="tx_formhandlergui_forms.newField">New field</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tx_formhandlergui_forms">Formhandler Formulare</label>

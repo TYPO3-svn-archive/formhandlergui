@@ -16,9 +16,9 @@
  * After hours of thinking - finally this class that for sure doesn't meet
  * the ideals of FLOW3 - but: it's simple and it works
  *
- * @author	Christian Opitz <co@netzelf.de>
  * @package	TYPO3
  * @subpackage	F3_FormhandlerGui
+ * @version $id$
  */
 class F3_FormhandlerGui_View_Simple {
 	

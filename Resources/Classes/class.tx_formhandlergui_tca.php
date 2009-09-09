@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Some hooks that formhandlergui needs.
+ * Generates the custom fields for form records
  *
  * $Id$
  *
@@ -30,40 +30,32 @@
  */
 
 /**
- * Contains some hook functions
+ * Userfuncs for fields in TCA
  * 
  * @author Christian Opitz <co@netzelf.de>
+ *
  */
-class tx_formhandlergui_hooks {
-	
-	/**
-	 * Adds the predefined fields of formhandlergui to the selection
-	 * in formhandler plugin.
-	 * 
-	 * @param $dataStructArray
-	 * @param $conf
-	 * @param $row
-	 * @param $table
-	 * @param $fieldName
-	 * @return void
-	 */
-	public function getFlexFormDS_postProcessDS(&$dataStructArray, &$conf, &$row, &$table, &$fieldName) {
-		
-		$func = $dataStructArray['sheets']['sDEF']['ROOT']['el']['predefined']['TCEforms']['config']['itemsProcFunc'];
-
-		if ($func == 'tx_dynaflex_formhandler->addFields_predefined') {
-			
-			include_once(t3lib_extMgm::extPath('formhandlergui') . '/Resources/Classes/class.tx_dynaflex_formhandlergui.php');
-			
-			$dataStructArray
-			['sheets']
-			['sDEF']
-			['ROOT']
-			['el']
-			['predefined']
-			['TCEforms']
-			['config']
-			['itemsProcFunc'] = 'tx_dynaflex_formhandlergui->addFields_predefined';
+class tx_formhandlergui_tca {
+	public function rows($PA,$fobj) {
+		return 'Reihen';
+	}
+	public function cols($PA,$fobj) {
+		return 'Spalten';
+	}
+	public function fields($config) {
+		$fields = array();
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fields'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fields'] as $fieldClass) {
+				$_procObj =& t3lib_div::getUserObj($fieldClass);
+				$fields[]['title'] = $_procObj->getFieldName();
+			}
 		}
+		$form = '<select size="1" name="fgui_fieldSelect" id="fgui_fieldSelect">';
+		foreach ($fields as $field) {
+			$form .= '<option value="'.$field['id'].'">'.$field['title'].'</option>';
+		}
+		$form .= '</select>';
+		return $form;
 	}
 }
+?>
