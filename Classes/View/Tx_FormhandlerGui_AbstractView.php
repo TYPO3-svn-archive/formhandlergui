@@ -17,11 +17,11 @@
  *
  * @author	Jochen Rau <j.rau@web.de>
  * @package	TYPO3
- * @subpackage	F3_MyPackage
+ * @subpackage	Tx_MyPackage
  */
-abstract class F3_FormhandlerGui_AbstractView extends tslib_pibase {	
-	public $prefixId = 'F3_MyPackage';
-	public $scriptRelPath = 'Resources/Language/F3_LanguageDummy.php';
+abstract class Tx_FormhandlerGui_AbstractView extends tslib_pibase {	
+	public $prefixId = 'Tx_MyPackage';
+	public $scriptRelPath = 'Resources/Language/Tx_LanguageDummy.php';
 	public $extKey = 'mypackage';
 	public $cObj;
 	public $piVars;
@@ -32,7 +32,7 @@ abstract class F3_FormhandlerGui_AbstractView extends tslib_pibase {
 	protected $subparts;
 	protected $typolinkConf;
 
-	public function __construct(F3_GimmeFive_Component_Manager $componentManager, F3_MyPackage_Configuration $configuration) {
+	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_MyPackage_Configuration $configuration) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
@@ -58,7 +58,7 @@ abstract class F3_FormhandlerGui_AbstractView extends tslib_pibase {
 			$templatePathAndFilename = PATH_site . $this->configuration->offsetGet('templateFile');			
 		} else {
 			// FIXME Hard coded path name
-			$templatePathAndFilename = t3lib_extMgm::extPath($this->configuration->getPackageKeyLowercase()) . F3_GimmeFive_Component_Manager::DIRECTORY_TEMPLATES . $templateFile;
+			$templatePathAndFilename = t3lib_extMgm::extPath($this->configuration->getPackageKeyLowercase()) . Tx_GimmeFive_Component_Manager::DIRECTORY_TEMPLATES . $templateFile;
 		}
 		if (!isset($templatePathAndFilename) || !file_exists($templatePathAndFilename)) throw new Exception('Template file not found.');
 			$templateCode = file_get_contents($templatePathAndFilename);

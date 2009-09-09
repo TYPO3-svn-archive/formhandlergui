@@ -21,14 +21,14 @@ require_once(PATH_t3lib.'class.t3lib_tceforms.php');
  * @package	Tx_Formhandler
  * @subpackage	Controller
  */
-class F3_FormhandlerGui_Controller_Forms extends F3_FormhandlerGui_AbstractController {
+class Tx_FormhandlerGui_Controller_Forms extends Tx_FormhandlerGui_AbstractController {
 
 
 	/**
 	 * The GimmeFive component manager
 	 *
 	 * @access protected
-	 * @var F3_GimmeFive_Component_Manager
+	 * @var Tx_GimmeFive_Component_Manager
 	 */
 	protected $componentManager;
 
@@ -36,7 +36,7 @@ class F3_FormhandlerGui_Controller_Forms extends F3_FormhandlerGui_AbstractContr
 	 * The global Formhandler configuration
 	 *
 	 * @access protected
-	 * @var F3_FormhandlerGui_Configuration
+	 * @var Tx_FormhandlerGui_Configuration
 	 */
 	protected $configuration;
 
@@ -44,23 +44,23 @@ class F3_FormhandlerGui_Controller_Forms extends F3_FormhandlerGui_AbstractContr
 	 * The view
 	 *
 	 * @access protected
-	 * @var F3_FormhandlerGui_View_Simple
+	 * @var Tx_FormhandlerGui_View_Simple
 	 */
 	protected $view;
 
 	/**
 	 * The constructor for a finisher setting the component manager and the configuration.
 	 *
-	 * @param F3_GimmeFive_Component_Manager $componentManager
-	 * @param F3_FormhandlerGui_Configuration $configuration
+	 * @param Tx_GimmeFive_Component_Manager $componentManager
+	 * @param Tx_FormhandlerGui_Configuration $configuration
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return void
 	 */
-	public function __construct(F3_GimmeFive_Component_Manager $componentManager, F3_FormhandlerGui_Configuration $configuration) {
+	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_FormhandlerGui_Configuration $configuration) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		
-		$this->view = $this->componentManager->getComponent('F3_FormhandlerGui_View_Simple');
+		$this->view = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Simple');
 		$this->view->setViewScriptPath('Module',true);
 		
 		$this->templatePath = t3lib_extMgm::extPath('formhandlergui') . 'Resources/HTML/backend/';
@@ -81,7 +81,7 @@ class F3_FormhandlerGui_Controller_Forms extends F3_FormhandlerGui_AbstractContr
 	protected function init() {
 		$this->setLangFile('locallang_mod.xml');
 		
-		$this->view = $this->componentManager->getComponent('F3_FormhandlerGui_View_Default');
+		$this->view = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Default');
 	}
 	
 	/**

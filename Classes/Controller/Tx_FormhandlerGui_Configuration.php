@@ -17,9 +17,9 @@
  *
  * @author	Jochen Rau <jochen.rau@typoplanet.de>
  * @package	TYPO3
- * @subpackage	F3_MyPackage
+ * @subpackage	Tx_MyPackage
  */
-class F3_FormhandlerGui_Configuration implements ArrayAccess {	
+class Tx_FormhandlerGui_Configuration implements ArrayAccess {	
 	const PACKAGE_KEY = 'FormhandlerGui';
 	
 	protected $setup;
@@ -73,11 +73,11 @@ class F3_FormhandlerGui_Configuration implements ArrayAccess {
 	}
 	
 	public function getPrefixedPackageKey() {
-		return F3_GimmeFive_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY;
+		return Tx_GimmeFive_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY;
 	}
 	
 	public function getPrefixedPackageKeyLowercase() {
-		return strtolower(F3_GimmeFive_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY);
+		return strtolower(Tx_GimmeFive_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY);
 	}
 }
 ?>

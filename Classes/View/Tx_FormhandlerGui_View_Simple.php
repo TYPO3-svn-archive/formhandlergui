@@ -17,10 +17,10 @@
  * the ideals of FLOW3 - but: it's simple and it works
  *
  * @package	TYPO3
- * @subpackage	F3_FormhandlerGui
+ * @subpackage	Tx_FormhandlerGui
  * @version $id$
  */
-class F3_FormhandlerGui_View_Simple {
+class Tx_FormhandlerGui_View_Simple {
 	
 	/**
 	 * The assigned values
@@ -37,10 +37,10 @@ class F3_FormhandlerGui_View_Simple {
 	
 	private $defaultExtension = 'phtml';
 	
-	public function __construct(F3_GimmeFive_Component_Manager $componentManager, F3_FormhandlerGui_Configuration $configuration) {
+	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_FormhandlerGui_Configuration $configuration) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
-		$this->viewScriptPath = t3lib_extMgm::extPath($this->configuration->getPackageKeyLowercase()) . F3_GimmeFive_Component_Manager::DIRECTORY_TEMPLATES;
+		$this->viewScriptPath = t3lib_extMgm::extPath($this->configuration->getPackageKeyLowercase()) . Tx_GimmeFive_Component_Manager::DIRECTORY_TEMPLATES;
 	}
 	
 	public function assign($varName, $value) {

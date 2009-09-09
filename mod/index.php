@@ -42,7 +42,7 @@ $LANG->includeLLFile('EXT:formhandlergui/Resources/Language/locallang.xml');
 $BE_USER->modAccess($MCONF,1);
 // DEFAULT initialization of a module [END]
 
-require_once (t3lib_extMgm::extPath('formhandlergui') . 'Classes/Component/F3_GimmeFive_Component_Manager.php');
+require_once (t3lib_extMgm::extPath('formhandlergui') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
 
 /**
  * Module 'Formhandler' for the 'formhandlergui' extension.
@@ -180,19 +180,19 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 
 		switch((string)$this->MOD_SETTINGS['function'])	{
 			case 1:
-				$controllerClass = 'F3_FormhandlerGui_Controller_Forms';
+				$controllerClass = 'Tx_FormhandlerGui_Controller_Forms';
 				break;
 			case 2:
-				$controllerClass = 'F3_FormhandlerGui_Controller_Reports';
+				$controllerClass = 'Tx_FormhandlerGui_Controller_Reports';
 				break;
 			case 3:
-				$controllerClass = 'F3_FormhandlerGui_Controller_Fields';
+				$controllerClass = 'Tx_FormhandlerGui_Controller_Fields';
 				break;
 			default:
 				return;
 		}
 
-		$componentManager = F3_GimmeFive_Component_Manager::getInstance();
+		$componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 		$controller = $componentManager->getComponent($controllerClass);
 		$content = $controller->process();
 		if (is_array($content)) {

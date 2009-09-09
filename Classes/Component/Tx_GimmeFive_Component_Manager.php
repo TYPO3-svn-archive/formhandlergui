@@ -19,8 +19,8 @@
  * @package	TYPO3
  * @subpackage	Tx_GimmeFive
  */
-class F3_GimmeFive_Component_Manager {
-	const PACKAGE_PREFIX = 'F3';
+class Tx_GimmeFive_Component_Manager {
+	const PACKAGE_PREFIX = 'Tx';
 	const THIS_PACKAGE_KEY = 'GimmeFive';
 	const DIRECTORY_CLASSES = 'Classes/';
 	const DIRECTORY_CONFIGURATION = 'Configuration/';
@@ -40,7 +40,7 @@ class F3_GimmeFive_Component_Manager {
 		
 	public static function getInstance() {
         if (self::$instance === NULL) {
-            self::$instance = new F3_GimmeFive_Component_Manager();
+            self::$instance = new Tx_GimmeFive_Component_Manager();
         }
         return self::$instance;
     }

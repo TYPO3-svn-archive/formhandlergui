@@ -18,10 +18,10 @@
  * Controller interface for Controller Classes of Formhandler
  *
  * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	F3_FormhandlerGui
+ * @package	Tx_FormhandlerGui
  * @subpackage	Controller
  */
-interface F3_FormhandlerGui_ControllerInterface {
+interface Tx_FormhandlerGui_ControllerInterface {
 
 	/**
 	 * Sets the content object

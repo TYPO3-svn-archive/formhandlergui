@@ -17,9 +17,9 @@
  *
  * @author	Jochen Rau <j.rau@web.de>
  * @package	TYPO3
- * @subpackage	F3_MyPackage
+ * @subpackage	Tx_MyPackage
  */
-class F3_FormhandlerGui_View_Default extends F3_FormhandlerGui_AbstractView {
+class Tx_FormhandlerGui_View_Default extends Tx_FormhandlerGui_AbstractView {
 
 	public function render() {
 		$this->fillMarker(array('FORM_NAME'=>$this->formName), $markerArray, $wrappedSubpartArray);

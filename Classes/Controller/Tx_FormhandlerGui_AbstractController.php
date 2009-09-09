@@ -17,11 +17,11 @@
 /**
  * Abstract class for Controller Classes used by Formhandler.
  *
- * @package	F3_FormhandlerGui
+ * @package	Tx_FormhandlerGui
  * @subpackage	Controller
  * @abstract
  */
-abstract class F3_FormhandlerGui_AbstractController implements F3_FormhandlerGui_ControllerInterface {
+abstract class Tx_FormhandlerGui_AbstractController implements Tx_FormhandlerGui_ControllerInterface {
 
 	/**
 	 * The content returned by the controller
