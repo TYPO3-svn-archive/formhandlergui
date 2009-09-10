@@ -20,7 +20,7 @@
  * @package	TYPO3
  * @subpackage	Tx_FormhandlerGui
  * @abstract
- * @version $id$
+ * @version $Id$
  */
 abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerGui_ControllerInterface*/ {
 
@@ -40,7 +40,7 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	protected $view;
 
 	/**
-	 * The constructor for a finisher setting the component manager and the configuration.
+	 * Just puting the objects to the instance
 	 *
 	 * @param Tx_GimmeFive_Component_Manager $componentManager
 	 * @param Tx_FormhandlerGui_Configuration $configuration

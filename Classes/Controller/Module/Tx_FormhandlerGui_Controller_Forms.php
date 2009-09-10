@@ -12,14 +12,12 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once(PATH_t3lib.'class.t3lib_tceforms.php');
-
 /**
- * Controller for Backend Module of Formhandler
+ * The controller for the backend module stuff
  *
- * @author	Reinhard Führicht <rf@typoheads.at>
- * @package	Tx_Formhandler
- * @subpackage	Controller
+ * @package	TYPO3
+ * @subpackage	Tx_FormhandlerGui
+ * @version $Id$
  */
 class Tx_FormhandlerGui_Controller_Forms extends Tx_FormhandlerGui_AbstractController {
 
@@ -27,6 +25,7 @@ class Tx_FormhandlerGui_Controller_Forms extends Tx_FormhandlerGui_AbstractContr
 	 * init method to load translation data
 	 *
 	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
 	 */
 	protected function init() {
 		$this->setLangFile('locallang_mod.xml');
@@ -35,41 +34,11 @@ class Tx_FormhandlerGui_Controller_Forms extends Tx_FormhandlerGui_AbstractContr
 	/**
 	 * Main method of the controller.
 	 *
-	 * @return mixed rendered view or array with tabs
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
 	 */
 	public function indexAction() {
 		$this->view->assign('test','Hallo');
 	}
-	
-	protected function tabGeneral() {
-		$this->view->assign('test','Huhu');
-		return $this->view->render('general');
-	}
-	
-	protected function tabMail() {
-		return 'Mail';
-	}
-	
-	protected function tabDatabase() {
-		return 'DB';
-	}
-
-	/**
-	 * Adds HTML code to include the CSS file to given HTML content.
-	 *
-	 * @param string The HTML content
-	 * @return string The changed HML content
-	 * @author Reinhard Führicht <rf@typoheads.at>
-	 */
-	protected function addCSS($content) {
-		$cssLink = '
-			<link 	rel="stylesheet" 
-					type="text/css" 
-					href="../../../Resources/CSS/backend/styles.css" 
-			/>
-		';
-		return $cssLink. $content;
-	}
-
 }
 ?>

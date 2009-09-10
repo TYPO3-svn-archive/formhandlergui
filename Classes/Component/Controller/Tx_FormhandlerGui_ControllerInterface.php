@@ -17,9 +17,10 @@
 /**
  * Controller interface for Controller Classes of Formhandler
  *
- * @author	Reinhard FÃ¼hricht <rf@typoheads.at>
  * @package	Tx_FormhandlerGui
  * @subpackage	Controller
+ * @version $Id$
+ * @author	Reinhard Führicht <rf@typoheads.at>
  */
 interface Tx_FormhandlerGui_ControllerInterface {
 

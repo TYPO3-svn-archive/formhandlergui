@@ -18,27 +18,36 @@
  *
  * @package	TYPO3
  * @subpackage	Tx_FormhandlerGui
- * @version $id$
+ * @version $Id$
  */
 class Tx_FormhandlerGui_View {
 
 	private $viewScriptExtensions = array('phtml','php');
-	
+
 	/**
 	 * The assigned values
-	 *
 	 * @var array
 	 */
 	private $vars = array();
 
-	private $controller;
-	
-	private $action;
-	
-	private $viewScript;
-	
+	/**
+	 * The name of the controller
+	 * @var string
+	 */
+	private $controllerName;
+
+	/**
+	 * The name of the action
+	 * @var string
+	 */
+	private $actionName;
+
+	/**
+	 * Can be TEMPLATE or VIEWSCRIPT
+	 * @var string
+	 */
 	private $renderMethod;
-	
+
 	/**
 	 * @var Tx_FormhandlerGui_Configuration
 	 */
@@ -49,58 +58,118 @@ class Tx_FormhandlerGui_View {
 	 */
 	private $componentManager;
 
+	/**
+	 * Path to the current view file
+	 * @var string
+	 */
+	private $viewFile;
+
+	/**
+	 * @param $componentManager
+	 * @param $configuration
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
 	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_FormhandlerGui_Configuration $configuration) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;
 	}
-	
+
+	/**
+	 * Puts a variable to the internal array for the current controller
+	 *
+	 * @param string $varName
+	 * @param mixed $value
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
 	public function assign($varName, $value) {
 		$varName = str_replace(array('$',' ','/','\\'),'',$varName);
 		$name = strval(trim($varName));
 		if (strlen($name) > 0) {
-			$this->vars[$this->controller][$name] = $value;
+			if (empty($this->controllerName)) {
+				throw new Exception('No current controller found to assign the variable. Set the controller name first.');
+				return;
+			}
+				
+			$this->vars[$this->controllerName][$name] = $value;
 		} else {
 			throw new Exception('Name for the assigned variable "'.$name.'" is of the wrong type or contains restricted chars.');
 		}
 	}
 
-	public function render($template = NULL) {
-		
-		$templateFile = $this->getTemplateFile($template);
-		
-		if ($this->renderMethod == 'VIEWSCRIPT') {
-			return $this->renderViewScript($templateFile);
-		} else {
-			return $this->renderTemplate($templateFile);
+	/**
+	 * Renders the view to a given template or viewScript. If you pass it a path
+	 * it'll try to get the template this relative to the according view path -
+	 * f.e. if rendering method is set to VIEWSCRIPT and you pass 'Standard/index'
+	 * it fetches '[DIRECTORY_VIEWSCRIPT]/Standard/index.[DEFAULT_VIEWSCRIPT_EXT].
+	 * You can switch the rendering method by using one of the extension that are set
+	 * for the according rendering method - f.e. if you use Standard/index.html and
+	 * VIEWSCRIPT is set as default it'll fetch as TEMPLATE anyway.
+	 *
+	 * @param string $view Another view if needed
+	 * @return string The rendered view
+	 * @author Christian Opitz <co@netzelf.de>
+	 * @see Tx_FormhandlerGui_Configuration
+	 */
+	public function render($view = NULL) {
+
+		if (!$this->prepareRendering($view)) {
+			return "";
 		}
-	}
 
-	private function renderTemplate($templateFile) {
-		//TODO: Make a function that renders the TYPO way
-	}
-
-	private function renderViewScript($templateFile) {
-		$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer');
-		return $renderer->render($templateFile, $this->vars[$this->controller]);
+		if ($this->renderMethod == 'VIEWSCRIPT') {
+			return $this->renderViewScript();
+		} else {
+			return $this->renderTemplate();
+		}
 	}
 
 	/**
-	 * Gets the view script path
+	 * Renders a html-template with markers
 	 *
-	 * @param $path string Path or Directory (if $cd is true)
-	 * @param $cd boolean Change Directory
-	 * @return unknown_type
+	 * @return string The rendered template
+	 * @author Christian Opitz <co@netzelf.de>
 	 */
-	public function getTemplateFile($templateFile=null) {
-		if ($templateFile !== null) {
-			$file = pathinfo($template);
+	private function renderTemplate() {
+		//TODO: Make a function that renders the TYPO way
+		return '';
+	}
+
+	/**
+	 * Calls the viewScript renderer
+	 *
+	 * @return string the rendered viewScript
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	private function renderViewScript() {
+		$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer');
+		return $renderer->render($this->viewFile, $this->vars[$this->controllerName]);
+	}
+
+	/**
+	 * Prepares the rendering method and the view file
+	 *
+	 * @param string $view
+	 * @return boolean If preparation was successfull
+	 * @author Christian Opitz <co@netzelf.de>
+	 * @see Tx_FormhandlerGui_View::render()
+	 */
+	public function prepareRendering($view=null) {
+		if ($view !== null) {
+			$file = pathinfo($view);
 		}else{
+			if (empty($this->controllerName) || empty($this->actionName)) {
+				throw new Exception('Could not autoload the view file. No controller or action defined. Set controller and action name first.');
+				return false;
+			}
+			
 			$file = array(
-				'path' => ucfirst($this->controller), 
-				'basename' => $this->action
+				'dirname' => ucfirst($this->controllerName), 
+				'filename' => $this->actionName
 			);
 		}
-		
+
 		if (empty($file['extension'])) {
 			$file['extension'] = $this->config->getDefaultExtension();
 			$this->renderMethod = Tx_FormhandlerGui_Configuration::DEFAULT_RENDERMETHOD;
@@ -110,12 +179,12 @@ class Tx_FormhandlerGui_View {
 			}elseif ($this->isViewScript($file['extension'])) {
 				$this->renderMethod = 'VIEWSCRIPT';
 			}else{
-				throw new Exception('The requested view '.$templateFile.' is of the wrong file type ('.
-					Tx_FormhandlerGui_Configuration::VIEWSCRIPT_EXTENSIONS.','.
-					Tx_FormhandlerGui_Configuration::TEMPLATE_EXTENSIONS.' allowed)'
+				throw new Exception('The requested view '.$view.' is of the wrong file type ('.
+				Tx_FormhandlerGui_Configuration::VIEWSCRIPT_EXTENSIONS.','.
+				Tx_FormhandlerGui_Configuration::TEMPLATE_EXTENSIONS.' allowed)'
 				);
 			}
-			
+
 		}
 
 		if ($this->renderMethod == 'VIEWSCRIPT') {
@@ -123,38 +192,70 @@ class Tx_FormhandlerGui_View {
 		}else{
 			$path = $this->config->getTemplatePath();
 		}
-		
-		$templateFile = rtrim($path,"\\,/");
 
-		if (!empty($file['path'])) {
-			$templateFile .= '/'.ltrim($file['path'],"\\,/");
-		}
-	
-		$templateFile .= '/'.$file['basename'];
-		$templateFile .= '.'.$file['extension'];
+		$viewFile = rtrim($path,"\\,/");
 
-		if (!@file_exists($templateFile)) {
-			throw new Exception('Could not retrieve template file: "'.$templateFile.'" (does not exist)');
+		if (!empty($file['dirname'])) {
+			$viewFile .= '/'.ltrim($file['dirname'],"\\,/");
 		}
-		
-		return $templateFile;
+
+		$viewFile .= '/'.$file['filename'];
+		$viewFile .= '.'.$file['extension'];
+
+		if (!@file_exists($viewFile)) {
+			throw new Exception('Could not retrieve template file: "'.$viewFile.'" (does not exist)');
+			return false;
+		}
+
+		$this->viewFile = $viewFile;
+
+		return true;
 	}
-	
+
+	/**
+	 * Tests if a file extension is of template
+	 *
+	 * @param $ext
+	 * @return boolean True if it is a template
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
 	private function isTemplate($ext) {
 		$extensions = explode(',', Tx_FormhandlerGui_Configuration::TEMPLATE_EXTENSIONS);
 		return in_array($ext,$extensions);
 	}
-	
+
+	/**
+	 * Tests if a file extension is of viewScript
+	 *
+	 * @param $ext
+	 * @return boolean True if it is a viewScript
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
 	private function isViewScript($ext) {
 		$extensions = explode(',', Tx_FormhandlerGui_Configuration::VIEWSCRIPT_EXTENSIONS);
 		return in_array($ext,$extensions);
 	}
-	
-	public function setController($controller) {
-		$this->controller = $controller;
+
+	/**
+	 * Set the controller name. This is needed to put variables to 
+	 * the proper key while assigning and to fetch the right view
+	 * 
+	 * @param $controllerName
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function setControllerName($controllerName) {
+		$this->controllerName = $controllerName;
 	}
-	
-	public function setAction($action) {
-		$this->action = $action;
+
+	/**
+	 * Set the action name. This is needed  to fetch the right view
+	 * 
+	 * @param $actionName
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function setActionName($actionName) {
+		$this->actionName = $actionName;
 	}
 }
