@@ -20,29 +20,34 @@
  * @subpackage	Tx_FormhandlerGui
  * @version $id$
  */
-class Tx_FormhandlerGui_View_Simple {
-	
+class Tx_FormhandlerGui_View_ZfAlike {
+
 	/**
 	 * The assigned values
-	 * 
+	 *
 	 * @var array
 	 */
 	private $vars = array();
-	
+
 	private $langFile;
-	
+
 	private $langFilePath;
-	
+
 	private $viewScriptPath;
-	
+
 	private $defaultExtension = 'phtml';
-	
+
+	/**
+	 * @var Tx_GimmeFive_Component_Manager
+	 */
+	private $componentManager;
+
 	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_FormhandlerGui_Configuration $configuration) {
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		$this->viewScriptPath = t3lib_extMgm::extPath($this->configuration->getPackageKeyLowercase()) . Tx_GimmeFive_Component_Manager::DIRECTORY_TEMPLATES;
 	}
-	
+
 	public function assign($varName, $value) {
 		$varName = str_replace(array('$',' ','/','\\'),'',$varName);
 		$name = strval(trim($varName));
@@ -52,38 +57,40 @@ class Tx_FormhandlerGui_View_Simple {
 			throw new Exception('Name for the assigned variable "'.$name.'" is of the wrong type or contains restricted chars.');
 		}
 	}
-	
+
 	public function render($template) {
 		$file = pathinfo($template);
 		if (empty($file['extension'])) {
 			$file['extension'] = $this->defaultExtension;
 		}
-		
+
 		$templateFile = rtrim($this->viewScriptPath,"\\,/");
-		
+
 		if (!empty($file['path'])) {
 			$templateFile .= '/'.ltrim($file['path'],"\\,/");
 		}
-		
+
 		$templateFile .= '/'.$file['basename'];
 		$templateFile .= '.'.$file['extension'];
-		
+
 		if (!@file_exists($templateFile)) {
 			throw new Exception('Could not retrieve template file: "'.$templateFile.'" (does not exist)');
 			return;
 		}
-		
+
 		if (in_array($file['extension'],array('html','htm','tmpl'))) {
 			return $this->renderMarkers($templateFile);
 		} else {
-			return $this->renderPHP($templateFile);
+			$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer');
+			return $renderer->render($templateFile, $this->vars);
+			//return $this->renderPHP($templateFile);
 		}
 	}
-	
+
 	private function renderMarkers($templateFile) {
 		//TODO: Make a function that renders the TYPO way
 	}
-	
+
 	private function renderPHP($templateFile) {
 		extract($this->vars);
 		ob_start();
@@ -92,10 +99,10 @@ class Tx_FormhandlerGui_View_Simple {
 		ob_end_clean();
 		return $templateContent;
 	}
-	
+
 	/**
 	 * Sets the view script path
-	 * 
+	 *
 	 * @param $path string Path or Directory (if $cd is true)
 	 * @param $cd boolean Change Directory
 	 * @return unknown_type
@@ -107,7 +114,7 @@ class Tx_FormhandlerGui_View_Simple {
 			$this->viewScriptPath = $path;
 		}
 	}
-	
+
 	/**
 	 * Sets the internal attribute "langFile"
 	 *
@@ -131,10 +138,10 @@ class Tx_FormhandlerGui_View_Simple {
 	public function setLangFilePath($langFilePath) {
 		$this->langFilePath = $langFilePath;
 	}
-	
+
 	/**
 	 * Translates a string with the given ID
-	 * 
+	 *
 	 * @param string $msgid
 	 * @return string The translated string
 	 */

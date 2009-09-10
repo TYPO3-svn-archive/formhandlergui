@@ -60,7 +60,7 @@ class Tx_FormhandlerGui_Controller_Forms extends Tx_FormhandlerGui_AbstractContr
 		$this->componentManager = $componentManager;
 		$this->configuration = $configuration;
 		
-		$this->view = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Simple');
+		$this->view = $this->componentManager->getComponent('Tx_FormhandlerGui_View_ZfAlike');
 		$this->view->setViewScriptPath('Module',true);
 		
 		$this->templatePath = t3lib_extMgm::extPath('formhandlergui') . 'Resources/HTML/backend/';
