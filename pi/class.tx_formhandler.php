@@ -45,7 +45,7 @@ require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Controller/Tx_Form
  * @see typo3conf/ext/formhandler/pi/class.tx_formhandler.php#main()
  * @see typo3conf/ext/formhandlergui/ext_tables.php#30
  */
-class tx_formhandler extends Tx_Formhandler_Dispatcher {
+class tx_formhandler extends tslib_pibase {
 
 	/**
 	 * Same as class name
@@ -77,6 +77,8 @@ class tx_formhandler extends Tx_Formhandler_Dispatcher {
 	 */
 	public function main($content, $setup) {
 
+		$this->pi_USER_INT_obj = 1;
+		
 		$setup['settings.']['predef.']['default.']['formValuesPrefix'] = 'formhandlergui';
 		var_dump($setup);
 

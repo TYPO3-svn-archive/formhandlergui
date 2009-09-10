@@ -21,59 +21,39 @@
  * @subpackage	Controller
  * @abstract
  */
-abstract class Tx_FormhandlerGui_AbstractController implements Tx_FormhandlerGui_ControllerInterface {
+abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerGui_ControllerInterface*/ {
 
 	/**
-	 * The content returned by the controller
-	 *
-	 * @access protected
-	 * @var Tx_Formhandler_Content
+	 * @var Tx_GimmeFive_Component_Manager
 	 */
-	protected $content;
-
-	/**
-	 * The key of a possibly selected predefined form
-	 *
-	 * @access protected
-	 * @var string
-	 */
-	protected $predefined;
-
-	/**
-	 * The name of the current translation file
-	 *
-	 * @access protected
-	 * @var string
-	 */
-	protected $langFile;
+	protected $componentManager;
 	
 	/**
-	 * The path where the translation files are located
-	 * 
-	 * @access protected
-	 * @var string
+	 * @var Tx_FormhandlerGui_Configuration
 	 */
-	protected $langFileRoot = 'EXT:formhandlergui/Resources/Language/';
+	protected $configuration;
+	
+	/**
+	 * @var Tx_FormhandlerGui_View
+	 */
+	protected $view;
 
 	/**
-	 * Sets the content attribute of the controller
+	 * The constructor for a finisher setting the component manager and the configuration.
 	 *
-	 * @param Tx_Formhandler_Content $content
+	 * @param Tx_GimmeFive_Component_Manager $componentManager
+	 * @param Tx_FormhandlerGui_Configuration $configuration
 	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return void
 	 */
-	public function setContent($content) {
-		$this->content = $content;
-	}
-
-	/**
-	 * Returns the content attribute of the controller
-	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
-	 * @return Tx_Formhandler_Content
-	 */
-	public function getContent() {
-		return $this->content;
+	public function __construct(
+		Tx_GimmeFive_Component_Manager $componentManager, 
+		Tx_FormhandlerGui_Configuration $configuration,
+		Tx_FormhandlerGui_View $view
+	) {
+		$this->componentManager = $componentManager;
+		$this->configuration = $configuration;
+		$this->view = $view;
 	}
 
 	/**
@@ -87,39 +67,6 @@ abstract class Tx_FormhandlerGui_AbstractController implements Tx_FormhandlerGui
 		global $LANG;
 		$this->langFile = $langFile;
 		$LANG->includeLLFile($this->langFileRoot.$langFile);
-	}
-	
-	/**
-	 * Translates a string with the given ID
-	 * 
-	 * @param string $msgid
-	 * @return string The translated string
-	 */
-	public function getLL($msgid) {
-		global $LANG;
-		return $LANG->getLL($msgid);
-	}
-	
-	/**
-	 * Sets the internal attribute "emailSettings"
-	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
-	 * @param array $new
-	 * @return void
-	 */
-	public function setEmailSettings($new) {
-		$this->emailSettings = $new;
-	}
-
-	/**
-	 * Sets the template file attribute to $template
-	 *
-	 * @author	Reinhard Führicht <rf@typoheads.at>
-	 * @param string $template
-	 * @return void
-	 */
-	public function setTemplateFile($template) {
-		$this->templateFile = $template;
 	}
 	
 	/**

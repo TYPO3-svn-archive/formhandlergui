@@ -42,7 +42,7 @@ $LANG->includeLLFile('EXT:formhandlergui/Resources/Language/locallang.xml');
 $BE_USER->modAccess($MCONF,1);
 // DEFAULT initialization of a module [END]
 
-require_once (t3lib_extMgm::extPath('formhandlergui') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once (t3lib_extMgm::extPath('formhandlergui') . 'Classes/Component/Tx_FormhandlerGui_Dispatcher.php');
 
 /**
  * Module 'Formhandler' for the 'formhandlergui' extension.
@@ -85,9 +85,9 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 		global $LANG;
 		$this->MOD_MENU = Array (
 			'function' => Array (
-				'1' => $LANG->getLL('function1'),
-				'2' => $LANG->getLL('function2'),
-				'3' => $LANG->getLL('function3'),
+				'forms' => $LANG->getLL('function1'),
+				'report' => $LANG->getLL('function2'),
+				'settings' => $LANG->getLL('function3'),
 		)
 		);
 		parent::menuConfig();
@@ -144,7 +144,7 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 		$this->content.=$this->doc->header($LANG->getLL('title'));
 		$this->content.=$this->doc->spacer(5);
 
-		$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
+		//$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
 
 		// compile document
 		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
@@ -178,27 +178,15 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 	 */
 	function moduleContent()	{
 
-		switch((string)$this->MOD_SETTINGS['function'])	{
-			case 1:
-				$controllerClass = 'Tx_FormhandlerGui_Controller_Forms';
-				break;
-			case 2:
-				$controllerClass = 'Tx_FormhandlerGui_Controller_Reports';
-				break;
-			case 3:
-				$controllerClass = 'Tx_FormhandlerGui_Controller_Fields';
-				break;
-			default:
-				return;
+		$controller = (string) $this->MOD_SETTINGS['function'];
+		$functions = array_keys($this->MOD_MENU['function']);
+		if (in_array($function,$functions)) {
+			$controller = $functions[0];
 		}
 
-		$componentManager = Tx_GimmeFive_Component_Manager::getInstance();
-		$controller = $componentManager->getComponent($controllerClass);
-		$content = $controller->process();
-		if (is_array($content)) {
-			// Add hidden fields and create tabs:
-			$content = $this->doc->getDynTabMenu($content,'user_ws');
-		}
+		$dispatcher = t3lib_div::makeInstance('Tx_FormhandlerGui_Dispatcher');
+		
+		$content = $dispatcher->dispatch($controller);
 
 		$this->content .= $this->doc->section('', $content, 0, 1);
 	}
