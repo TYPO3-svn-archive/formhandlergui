@@ -15,11 +15,12 @@
  *                                                                        */
 
 /**
- * Abstract class for Controller Classes used by Formhandler.
+ * Abstract class for Controller Classes used by FormhandlerGui
  *
- * @package	Tx_FormhandlerGui
- * @subpackage	Controller
+ * @package	TYPO3
+ * @subpackage	Tx_FormhandlerGui
  * @abstract
+ * @version $id$
  */
 abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerGui_ControllerInterface*/ {
 
@@ -31,7 +32,7 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	/**
 	 * @var Tx_FormhandlerGui_Configuration
 	 */
-	protected $configuration;
+	protected $config;
 	
 	/**
 	 * @var Tx_FormhandlerGui_View
@@ -43,8 +44,9 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	 *
 	 * @param Tx_GimmeFive_Component_Manager $componentManager
 	 * @param Tx_FormhandlerGui_Configuration $configuration
-	 * @author Reinhard Führicht <rf@typoheads.at>
+	 * @param Tx_FormhandlerGui_View $view
 	 * @return void
+	 * @author Christian Opitz
 	 */
 	public function __construct(
 		Tx_GimmeFive_Component_Manager $componentManager, 
@@ -52,16 +54,16 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 		Tx_FormhandlerGui_View $view
 	) {
 		$this->componentManager = $componentManager;
-		$this->configuration = $configuration;
+		$this->config = $configuration;
 		$this->view = $view;
 	}
 
 	/**
 	 * Sets the internal attribute "langFile"
 	 *
-	 * @author Christian Opitz <co@netzelf.de>
 	 * @param string $langFile
 	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
 	 */
 	public function setLangFile($langFile) {
 		global $LANG;
@@ -72,11 +74,11 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	/**
 	 * Returns the right settings for the formhandler (Checks if predefined form was selected)
 	 *
-	 * @author Reinhard Führicht <rf@typoheads.at>
 	 * @return array The settings
+	 * @author Reinhard F�hricht <rf@typoheads.at>
 	 */
 	public function getSettings() {
-		$settings = $this->configuration->getSettings();
+		$settings = $this->config->getSettings();
 
 		if($this->predefined) {
 				
