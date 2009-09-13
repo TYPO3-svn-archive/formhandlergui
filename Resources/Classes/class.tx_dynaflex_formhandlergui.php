@@ -51,7 +51,7 @@ class tx_dynaflex_formhandlergui extends tx_dynaflex_formhandler
 	 */
 	public function loadTS($pageUid) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'uid, title, multiple',
+			'uid, title, type',
 			'tx_formhandlergui_forms',
 			'deleted = 0 AND hidden = 0',
 			'',
@@ -63,7 +63,7 @@ class tx_dynaflex_formhandlergui extends tx_dynaflex_formhandler
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$id = 'tx_formhandlergui'.$row['uid'].'.';
 			$name = $row['title'];
-			if ($row['multiple']) {
+			if (intval($row['type']) == 1) {
 				$name .= ' (MultiStep)';
 			}
 			

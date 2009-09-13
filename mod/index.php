@@ -59,21 +59,11 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 	public  $doc;
 
 	var $pageinfo;
-
-	/**
-	 * Initializes the Module
-	 *
-	 * @return	void
-	 */
-	function init()	{
-		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
+	
+	function init() {
+		global $MCONF;
+		$MCONF['extConf'] = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['formhandlergui']);
 		parent::init();
-		/*
-		 if (t3lib_div::_GP('clear_all_cache'))	{
-			$this->include_once[] = PATH_t3lib.'class.t3lib_tcemain.php';
-			}
-			*/
 	}
 
 	/**
@@ -82,14 +72,13 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function menuConfig()	{
-		global $LANG;
-		$this->MOD_MENU = Array (
-			'function' => Array (
-				'forms' => $LANG->getLL('function1'),
-				'report' => $LANG->getLL('function2'),
-				'settings' => $LANG->getLL('function3'),
-		)
-		);
+		global $LANG, $MCONF;
+		$this->MOD_MENU = Array ('function' => Array ());
+		
+		foreach ($MCONF['menuItems'] as $action => $name) {
+			$this->MOD_MENU['function'][$action] = $LANG->getLL($name);
+		}
+		
 		parent::menuConfig();
 	}
 
@@ -198,6 +187,7 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 	 * @return array all available buttons as an assoc. array
 	 */
 	protected function getButtons()	{
+		global $MCONF;
 
 		$buttons = array(
 			'csh' => '',
@@ -211,9 +201,11 @@ class  tx_formhandlergui_module1 extends t3lib_SCbase {
 			// SAVE button
 			$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
 
-			$returnUrl  = t3lib_extMgm::extRelPath('formhandlergui').'Classes/Controller/Module/index.php';
+			$pid = $MCONF['extConf']['fguiPid'];
+			
+			$returnUrl  = t3lib_extMgm::extRelPath('formhandlergui').'mod/index.php';
 			$returnUrl  = urlencode($returnUrl);
-			$createlink = $GLOBALS['BACK_PATH'].'alt_doc.php?returnUrl='.$returnUrl.'&edit[tx_formhandlergui_forms][]=new';
+			$createlink = $GLOBALS['BACK_PATH'].'alt_doc.php?returnUrl='.$returnUrl.'&edit[tx_formhandlergui_forms]['.$pid.']=new';
 
 			//Wieso geht hier nicht $buttons['new']???
 			$buttons['save'] .= '<a href="'.$createlink.'"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_el.gif', '').' alt="Create" /></a>';

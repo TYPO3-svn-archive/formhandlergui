@@ -38,7 +38,7 @@ require_once(PATH_t3lib.'class.t3lib_treeview.php');
  */
 class tx_formhandlergui_formtree extends t3lib_treeview {
 
-	var $fieldArray = array('uid','pid','title','multiple','multiple_forms');
+	var $fieldArray = array('uid','pid','title','type','multistep_forms');
 	var $setRecs = 0;
 
 	public function init() {
@@ -51,8 +51,8 @@ class tx_formhandlergui_formtree extends t3lib_treeview {
 		$this->title = $LANG->getLL('all_forms');
 		$this->treeName='forms_tree';
 		$this->table = 'tx_formhandlergui_forms';
-		$this->parentField = 'multiple_forms';
-		$this->orderByFields = 'multiple, title';
+		$this->parentField = 'multistep_forms';
+		$this->orderByFields = 'type, title';
 		$this->expandFirst = true;
 		$this->expandAll = 1;
 		$this->MOUNTS = array(
@@ -86,7 +86,7 @@ class tx_formhandlergui_formtree extends t3lib_treeview {
 	function getIcon($row) {
 		$src = $this->backPath.t3lib_extMgm::extRelPath('formhandlergui').'Resources/Images/icon_';
 		
-		if ($row['multiple']) {
+		if (intval($row['type']) == 1) {
 			$src .= 'multistepform.gif';
 		} elseif ($this->multiStep) {
 			$src .= 'stepform.gif';
@@ -106,7 +106,7 @@ class tx_formhandlergui_formtree extends t3lib_treeview {
 				implode(',',$this->fieldArray),
 				$this->table,
 				'uid > 0 '.t3lib_BEfunc::deleteClause($this->table).
-				t3lib_BEfunc::versioningPlaceholderClause($this->table).
+				//t3lib_BEfunc::versioningPlaceholderClause($this->table).
 				$this->clause,	// whereClauseMightContainGroupOrderBy
 				'',
 				$this->orderByFields
@@ -119,11 +119,11 @@ class tx_formhandlergui_formtree extends t3lib_treeview {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				$this->parentField,
 				$this->table,
-				"multiple_forms <> '' AND deleted = 0 AND uid=".$GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table)
+				"type='1' AND multistep_forms <> '' AND deleted = 0 AND uid=".$GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table)
 			);
 			
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$multiple = $row['multiple_forms'];
+				$multiple = $row['multistep_forms'];
 				
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				

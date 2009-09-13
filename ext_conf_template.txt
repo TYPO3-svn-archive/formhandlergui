@@ -1,0 +1,2 @@
+  # cat=basic; type=int; label=FormhandlerGui PID (SysFolder): This should be a SysFolder, where FormhandlerGui saves all forms and fields:
+fguiPid = 0

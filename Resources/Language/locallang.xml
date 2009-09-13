@@ -7,9 +7,9 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">Formhandler</label>
-			<label index="function1">Function #1</label>
-			<label index="function2">Function #2</label>
-			<label index="function3">Function #3</label>
+			<label index="func.forms">Forms management</label>
+			<label index="func.reports">Reports</label>
+			<label index="func.settings">Settings</label>
 			<label index="tab_general">General</label>
 			<label index="tab_mail">Email</label>
 			<label index="tab_database">Database</label>

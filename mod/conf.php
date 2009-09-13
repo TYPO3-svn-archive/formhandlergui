@@ -12,4 +12,10 @@ $MCONF['navFrameScript'] = 'navframe.php';
 
 $MLANG['default']['tabs_images']['tab'] = '../Resources/Images/icon_forms.gif';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:formhandlergui/Resources/Language/locallang_mod.xml';
+
+$MCONF['menuItems'] = array(
+	'forms' => 'func.forms',
+	'report' => 'func.reports',
+	'settings' => 'func.settings'
+);
 ?>

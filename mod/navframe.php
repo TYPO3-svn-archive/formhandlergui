@@ -58,13 +58,29 @@ class tx_formhandlergui_navframe extends t3lib_SCbase {
 	 */
 	public $doc = '';
 	
+	/**
+	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
+	 *
+	 * @return	void
+	 */
+	function menuConfig()	{
+		global $LANG, $MCONF;
+		$this->MOD_MENU = Array ('function' => Array ());
+		
+		foreach ($MCONF['menuItems'] as $action => $name) {
+			$this->MOD_MENU['function'][$action] = $LANG->getLL($name);
+		}
+		
+		parent::menuConfig();
+	}
+	
 	function __construct() {
 		$this->treeObj = t3lib_div::makeInstance('tx_formhandlergui_formtree');
 		$this->treeObj->init();
 	}
 	
 	function initPage() {
-		global $BACK_PATH, $BE_USER;
+		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		
 		// Setting highlight mode:
 		$this->doHighlight = !$BE_USER->getTSConfigVal('options.pageTree.disableTitleHighlight');
@@ -76,12 +92,14 @@ class tx_formhandlergui_navframe extends t3lib_SCbase {
 		
 		$this->doc = t3lib_div::makeInstance('template');
 		
+		//$this->doc->setModuleTemplate('templates/alt_db_navframe.html');
+		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('formhandlergui') . 'Resources/Template/Module/alt_db_navframe.html');
+		
 		$this->doc->backPath = $BACK_PATH;
 		
 		$this->doc->getContextMenuCode();
 		$this->doc->loadJavascriptLib('contrib/scriptaculous/scriptaculous.js?load=effects');
 		
-		$this->doc->setModuleTemplate('templates/alt_db_navframe.html');
 		$this->doc->docType  = 'xhtml_trans';
 
 			// get HTML-Template
@@ -106,6 +124,11 @@ class tx_formhandlergui_navframe extends t3lib_SCbase {
 			'.(!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ').'
 			return false;
 		}
+		
+		script_ended = 0;
+		function jumpToUrl(URL)	{
+			document.location = URL;
+		}
 		'.($this->cMR?"jumpTo(top.fsMod.recentIds['web'],'');":'').
 
 			($this->hasFilterBox ? 'var TYPO3PageTreeFilter = new PageTreeFilter();' : '') . '
@@ -126,6 +149,8 @@ class tx_formhandlergui_navframe extends t3lib_SCbase {
 			'CONTENT'       => $this->content
 		);
 		$subparts = array();
+		
+		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		
 		$this->content = $this->doc->startPage('TYPO3 Page Tree');
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);

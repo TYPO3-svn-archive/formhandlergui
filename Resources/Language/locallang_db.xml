@@ -15,6 +15,7 @@
 			<label index="tx_formhandlergui_forms.method.I.1">GET</label>
 			<label index="tx_formhandlergui_forms.method">Method</label>
 			<label index="tx_formhandlergui_forms.prefix">Prefix</label>
+			<label index="tx_formhandlergui_forms.multistep_forms">MultiStep forms</label>
 			<label index="tx_formhandlergui_forms.enable_email">Email results</label>
 			<label index="tx_formhandlergui_forms.enable_db">Enable DB storage</label>
 			<label index="tx_formhandlergui_forms.debug">Debug</label>
@@ -23,6 +24,14 @@
 			<label index="tx_formhandlergui_forms.cols">Columns</label>
 			<label index="tx_formhandlergui_forms.fields">Fields</label>
 			<label index="tx_formhandlergui_forms.newField">New field</label>
+			<label index="tx_formhandlergui_fields">Formhandler Fields</label>
+			<label index="tx_formhandlergui_fields.field_type.I.0">Please select</label>
+			<label index="tx_formhandlergui_fields.field_type">Field type</label>
+			<label index="tx_formhandlergui_fields.title">Field title</label>
+			<label index="tx_formhandlergui_fields.label">Label</label>
+			<label index="tx_formhandlergui_fields.lang_opt">Language definitions</label>
+			<label index="tx_formhandlergui_fields.field_opt">Field options</label>
+			<label index="tx_formhandlergui_fields.validators">Validations</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tx_formhandlergui_forms">Formhandler Formulare</label>

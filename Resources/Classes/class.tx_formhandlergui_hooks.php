@@ -49,9 +49,22 @@ class tx_formhandlergui_hooks {
 	 */
 	public function getFlexFormDS_postProcessDS(&$dataStructArray, &$conf, &$row, &$table, &$fieldName) {
 		
-		$func = $dataStructArray['sheets']['sDEF']['ROOT']['el']['predefined']['TCEforms']['config']['itemsProcFunc'];
-
-		if ($func == 'tx_dynaflex_formhandler->addFields_predefined') {
+		//$func = $dataStructArray['sheets']['sDEF']['ROOT']['el']['predefined']['TCEforms']['config']['itemsProcFunc'];
+		$struct = array('sheets','sDEF','ROOT','el','predefined','TCEforms','config');
+		
+		$array = $dataStructArray;
+		
+		foreach ($struct as $part) {
+			if (is_array($array[$part])) {
+				$array = $array[$part];
+			}else{
+				return;
+			}
+		}
+		
+		$func = $array['itemsProcFunc'];
+		
+		if ( $func == 'tx_dynaflex_formhandler->addFields_predefined') {
 			
 			include_once(t3lib_extMgm::extPath('formhandlergui') . '/Resources/Classes/class.tx_dynaflex_formhandlergui.php');
 			
