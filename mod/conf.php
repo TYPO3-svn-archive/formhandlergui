@@ -1,7 +1,7 @@
 <?php
 
 	// DO NOT REMOVE OR CHANGE THESE 2 LINES:
-$MCONF['name'] = 'tools_txformhandlerguiM1';
+$MCONF['name'] = 'web_txformhandlerguiM1';
 define('TYPO3_MOD_PATH', '../typo3conf/ext/formhandlergui/mod/');
 $MCONF['script'] = 'index.php';
 $BACK_PATH = '../../../../typo3/';

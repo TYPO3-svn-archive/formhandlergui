@@ -22,13 +22,13 @@
 class Tx_FormhandlerGui_Controller_Forms extends Tx_FormhandlerGui_AbstractController {
 
 	/**
-	 * init method to load translation data
+	 * init method of the controller
 	 *
 	 * @return void
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
-	protected function init() {
-		$this->setLangFile('locallang_mod.xml');
+	public function init() {
+		//$this->view->setNoRender(true);
 	}
 	
 	/**
@@ -38,7 +38,8 @@ class Tx_FormhandlerGui_Controller_Forms extends Tx_FormhandlerGui_AbstractContr
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
 	public function indexAction() {
-		$this->view->assign('test','Hallo');
+		$this->view->test = 'Huhu';
+		//$this->view->assign('test','Hallo');
 	}
 }
 ?>

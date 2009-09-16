@@ -28,16 +28,22 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	 * @var Tx_GimmeFive_Component_Manager
 	 */
 	protected $componentManager;
-	
+
 	/**
 	 * @var Tx_FormhandlerGui_Configuration
 	 */
 	protected $config;
-	
+
 	/**
 	 * @var Tx_FormhandlerGui_View
 	 */
 	protected $view;
+
+	/**
+	 * Indicates if the controller is running
+	 * @var boolean
+	 */
+	private $controllerRunning;
 
 	/**
 	 * Just puting the objects to the instance
@@ -49,9 +55,9 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	 * @author Christian Opitz
 	 */
 	public function __construct(
-		Tx_GimmeFive_Component_Manager $componentManager, 
-		Tx_FormhandlerGui_Configuration $configuration,
-		Tx_FormhandlerGui_View $view
+	Tx_GimmeFive_Component_Manager $componentManager,
+	Tx_FormhandlerGui_Configuration $configuration,
+	Tx_FormhandlerGui_View $view
 	) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;
@@ -70,7 +76,7 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 		$this->langFile = $langFile;
 		$LANG->includeLLFile($this->langFileRoot.$langFile);
 	}
-	
+
 	/**
 	 * Returns the right settings for the formhandler (Checks if predefined form was selected)
 	 *
@@ -81,10 +87,90 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 		$settings = $this->config->getSettings();
 
 		if($this->predefined) {
-				
+
 			$settings = $settings['predef.'][$this->predefined];
 		}
 		return $settings;
+	}
+
+	/**
+	 * Runs an action - must not be called from within the controller
+	 * 
+	 * @param string $action
+	 * @param array $params
+	 * @return void
+	 */
+	public function run($action = 'index', $params = null) {
+		if ($this->controllerRunning) {
+			throw new Exception('Tx_FormhandlerGui_AbstractController::runAction() can not be executed from within controllers!');
+			return;
+		}
+
+		$this->setRunning(true);
+
+		if (method_exists($this, 'init')) {
+			$this->init();
+		}
+
+		$actionMethod = $action.'Action';
+
+		if (method_exists($this,$actionMethod)) {
+			$this->$actionMethod();
+		}else{
+			throw new Exception('Action method '.$actionMethod.' not found in '.get_class($this));
+		}
+
+		$this->setRunning(false);
+	}
+
+	/**
+	 * Stops the current run-process and forwards to another action
+	 * without resetting the view
+	 *
+	 * @param $action - the action to be executed
+	 * @param $controller - optional: another controller
+	 * @param $params - optional
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	private function _forward($action, $controller = null, $params = null) {
+		$this->setRunning(false);
+
+		$this->view->setActionName($action);
+
+		if ($controller === null) {
+			$this->run($action, $params);
+		}else{
+			$controllerClassName = Tx_FormhandlerGui_Configuration::getControllerClassName($controller);
+			$controllerClass = $this->componentManager->getComponent($controllerClassName);
+			$controllerClass->run($action, $params);
+		}
+	}
+
+	/**
+	 * Stops the current run-process, resets the view and forwards to another action
+	 *
+	 * @param $action - the action to be executed
+	 * @param $controller - optional: another controller
+	 * @param $params - optional
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	private function _redirect($action, $controller = null, $params = null) {
+		$this->setRunning(false);
+		$this->view->reset();
+		$this->_forward($action,$controller,$params);
+	}
+
+	/**
+	 * Sets controller running status in controller and view
+	 *
+	 * @param boolean $status If running or not
+	 * @return void
+	 */
+	private function setRunning($status) {
+		$this->controllerRunning = $status;
+		$this->view->setControllerRunning($status);
 	}
 }
 ?>

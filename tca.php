@@ -1,6 +1,8 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+include_once(t3lib_extMgm::extPath('formhandlergui') . '/Resources/Classes/class.tx_formhandlergui_tca.php');
+
 $TCA['tx_formhandlergui_forms'] = array (
 	'ctrl' => $TCA['tx_formhandlergui_forms']['ctrl'],
 	'interface' => array (
@@ -21,12 +23,14 @@ $TCA['tx_formhandlergui_forms'] = array (
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.fe_group',
 			'config'  => array (
 				'type'  => 'select',
+				'size' => 5,
 				'items' => array (
 					array('', 0),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--')
 				),
+				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups'
 			)
 		),
@@ -114,7 +118,7 @@ $TCA['tx_formhandlergui_forms'] = array (
 			'config' => array (
 				'type' => 'select',	
 				'foreign_table' => 'tx_formhandlergui_fields',
-				'foreign_table_where' => 'ORDER BY tx_formhandlergui_fields.field_title',	
+				'foreign_table_where' => 'ORDER BY tx_formhandlergui_fields.field_label',	
 				'size' => 6,	
 				'minitems' => 0,
 				'maxitems' => 100,	
@@ -184,7 +188,7 @@ $TCA['tx_formhandlergui_forms'] = array (
 $TCA['tx_formhandlergui_fields'] = array (
 	'ctrl' => $TCA['tx_formhandlergui_fields']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,fe_group,field_type,title,label_fd2f0beb3c,lang_opt,field_opt,validators'
+		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,fe_group,field_type,field_label,validators'
 	),
 	'feInterface' => $TCA['tx_formhandlergui_fields']['feInterface'],
 	'columns' => array (
@@ -232,12 +236,14 @@ $TCA['tx_formhandlergui_fields'] = array (
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.fe_group',
 			'config'  => array (
 				'type'  => 'select',
+				'size' => 5,
 				'items' => array (
 					array('', 0),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--')
 				),
+				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups'
 			)
 		),
@@ -249,17 +255,9 @@ $TCA['tx_formhandlergui_fields'] = array (
 				'items' => array (
 					array('LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.field_type.I.0', '0'),
 				),
-				'itemsProcFunc' => 'tx_formhandlergui_tca->fields',	
+				'itemsProcFunc' => 'tx_formhandlergui_tca->fieldTypeSelect',	
 				'size' => 1,	
 				'maxitems' => 1,
-			)
-		),
-		'field_title' => array (		
-			'exclude' => 0,		
-			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.title',		
-			'config' => array (
-				'type' => 'input',	
-				'size' => '30',
 			)
 		),
 		'field_label' => array (		
@@ -271,23 +269,25 @@ $TCA['tx_formhandlergui_fields'] = array (
 				'eval' => 'nospace',
 			)
 		),
-		'lang_opt' => array (		
+		'lang_conf' => array (		
 			'exclude' => 0,		
-			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.lang_opt',		
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.lang_conf',		
 			'config' => array (
 				'type' => 'flex',
+				'ds_pointerField' => 'field_type',
 				'ds' => array (
-					'default' => 'FILE:EXT:formhandler_dev/flexform_tx_formhandlerdev_fields_lang_opt.xml',
+					'0' => 'FILE:EXT:formhandler_dev/flexform_tx_formhandlerdev_fields_field_opt.xml',
 				),
 			)
 		),
-		'field_opt' => array (		
+		'field_conf' => array (		
 			'exclude' => 1,		
-			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.field_opt',		
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.field_conf',		
 			'config' => array (
 				'type' => 'flex',
+				'ds_pointerField' => 'field_type',
 				'ds' => array (
-					'default' => 'FILE:EXT:formhandler_dev/flexform_tx_formhandlerdev_fields_field_opt.xml',
+					'0' => 'FILE:EXT:formhandler_dev/flexform_tx_formhandlerdev_fields_field_opt.xml',
 				),
 			)
 		),
@@ -305,13 +305,37 @@ $TCA['tx_formhandlergui_fields'] = array (
 		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 
-		'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, field_type, field_title;;;;2-2-2')
-	),
-	'palettes' => array (
-		'1' => array('showitem' => 'fe_group')
-	)
+'0' => array('showitem' => 
+'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, field_type, field_label;;;;2-2-2'),
+'0-langConf' => array('showitem' => ',
+--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.tabs.lang_conf, lang_conf'),
+'0-fieldConf' => array('showitem' => ',
+--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.tabs.field_conf, field_conf'),
+'0-access' => array('showitem' => ',
+--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, fe_group')	
+),
+'palettes' => array (
+'1' => array('showitem' => 'fe_group'),
+'2' => array('showitem' => 'lang_conf','canNotCollapse' => 1),
+'3' => array('showitem' => 'field_conf','canNotCollapse' => 1)
+)
 );
 
-include_once(t3lib_extMgm::extPath('formhandlergui') . '/Resources/Classes/class.tx_formhandlergui_tca.php');
+//Now add the field types - can be done the same way from another extension 
+//(Consider to load the TCA in this case):
+//t3lib_div::loadTCA('tx_formhandlergui_fields');
+
+//Text field
+/*$TCA['tx_formhandlergui_fields']['columns']['field_type']['config']['items'][] =
+array('LLL:EXT:formhandlergui/Resources/Language/fields.xml:text.title', 'tx_formhandlergui_text');
+
+$TCA['tx_formhandlergui_fields']['columns']['lang_conf']['config']['ds']['tx_formhandlergui_text'] =
+'FILE:EXT:formhandlergui/Resources/Fields/tx_formhandlergui_text.lang.xml';
+
+$TCA['tx_formhandlergui_fields']['types']['tx_formhandlergui_text'] =
+$TCA['tx_formhandlergui_fields']['types']['0'].
+$TCA['tx_formhandlergui_fields']['types']['0-langConf'].
+$TCA['tx_formhandlergui_fields']['types']['0-access'];*/
+
+tx_formhandlergui_tca::addFieldTypes2TCA($TCA['tx_formhandlergui_fields']);
 ?>

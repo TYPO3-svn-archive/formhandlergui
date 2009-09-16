@@ -31,7 +31,7 @@
 
 /**
  * Userfuncs for fields in TCA
- * 
+ *
  * @author Christian Opitz <co@netzelf.de>
  *
  */
@@ -42,20 +42,65 @@ class tx_formhandlergui_tca {
 	public function cols($PA,$fobj) {
 		return 'Spalten';
 	}
-	public function fields($config) {
-		$fields = array();
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fields'])) {
+	
+	public function fieldTypeSelect($config) {
+		
+		$types = $this->getFieldTypes();
+		
+		/*if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fields'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fields'] as $fieldClass) {
 				$_procObj =& t3lib_div::getUserObj($fieldClass);
 				$fields[]['title'] = $_procObj->getFieldName();
 			}
+		}*/
+		
+		foreach ($types as $type => $conf) {
+			$config['items'][] = array(
+				$GLOBALS['LANG']->sL($conf['title']),
+				$type
+			);
 		}
-		$form = '<select size="1" name="fgui_fieldSelect" id="fgui_fieldSelect">';
-		foreach ($fields as $field) {
-			$form .= '<option value="'.$field['id'].'">'.$field['title'].'</option>';
+		return $config;
+	}
+	
+	/**
+	 * Manipulates the TCA
+	 * 
+	 * @param $types
+	 * @return unknown_type
+	 */
+	public static function addFieldTypes2TCA(&$TCA) {
+		$types = self::getFieldTypes();
+		
+		foreach ($types as $id => $conf) {
+			$TCA['types'][$id] = $TCA['types']['0'];
+			if ($conf['fieldConf'] !== false) {
+				$TCA['types'][$id]['showitem'] .= $TCA['types']['0-fieldConf']['showitem'];
+				
+				$TCA['columns']['field_conf']['config']['ds'][$id] = 'FILE:'.$conf['fieldConf'];
+			}
+			if ($conf['langConf'] !== false) {
+				$TCA['types'][$id]['showitem'] .= $TCA['types']['0-langConf']['showitem'];
+				
+				$TCA['columns']['lang_conf']['config']['ds'][$id] = 'FILE:'.$conf['langConf'];
+			}
+			$TCA['types'][$id]['showitem'] .= $TCA['types']['0-access']['showitem'];
 		}
-		$form .= '</select>';
-		return $form;
+	}
+	
+	public static function getFieldTypesLangDef() {
+		$types = self::getFieldTypes();
+		
+		
+	}
+	
+	private static function getFieldTypes() {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fieldTypes'])) {
+			$types = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fieldTypes'];
+		}else{
+			$types = array();
+		}
+		return $types;
 	}
 }
 ?>

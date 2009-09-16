@@ -41,8 +41,8 @@ CREATE TABLE tx_formhandlergui_fields (
 	field_type int(11) DEFAULT '0' NOT NULL,
 	field_title tinytext,
 	field_label tinytext,
-	lang_opt mediumtext,
-	field_opt mediumtext,
+	lang_conf mediumtext,
+	field_conf mediumtext,
 	validators varchar(80) DEFAULT '' NOT NULL,
 	
 	PRIMARY KEY (uid),

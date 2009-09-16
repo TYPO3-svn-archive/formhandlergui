@@ -37,26 +37,18 @@ class Tx_FormhandlerGui_Dispatcher {
 	 * @return string The rendered view
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
-	public function dispatch($controller='standard', $action='index', $params=array()) {
+	public function dispatch($controller='standard', $action='index', $params=null) {
 		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 		
-		$controllerClassName = Tx_FormhandlerGui_Configuration::getPrefixedPackageKey();
-		$controllerClassName .= '_Controller_'.ucfirst($controller);
+		$controllerClassName = Tx_FormhandlerGui_Configuration::getControllerClassName($controller);
 		
 		$controllerClass = $this->componentManager->getComponent($controllerClassName);
 		
-		$actionMethod = $action.'Action';
-		
 		$viewClass = $this->componentManager->getComponent('Tx_FormhandlerGui_View');
 		
-		$viewClass->setControllerName($controller);
-		$viewClass->setActionName($action);
+		$viewClass->init($controller, $action);
 		
-		if (method_exists($controllerClass,$actionMethod)) {
-			$controllerClass->$actionMethod();
-		}else{
-			throw new Exception('Action method '.$actionMethod.' not found in '.$controllerClassName);
-		}
+		$controllerClass->run($action, $params);
 		
 		return $viewClass->render();
 	}

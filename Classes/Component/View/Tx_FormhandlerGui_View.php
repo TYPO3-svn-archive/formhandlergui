@@ -22,8 +22,6 @@
  */
 class Tx_FormhandlerGui_View {
 
-	private $viewScriptExtensions = array('phtml','php');
-
 	/**
 	 * The assigned values
 	 * @var array
@@ -65,6 +63,24 @@ class Tx_FormhandlerGui_View {
 	private $viewFile;
 
 	/**
+	 * Indicates whether the view should be rendered automatically from beyond the controller
+	 * @var boolean
+	 */
+	private $noRender = false;
+
+	/**
+	 * Indicates if the controller is running
+	 * @var boolean
+	 */
+	private $controllerRunning = false;
+
+	/**
+	 * Contains rendered contents by controller
+	 * @var string
+	 */
+	private $renderedContent = '';
+
+	/**
 	 * @param $componentManager
 	 * @param $configuration
 	 * @return void
@@ -73,6 +89,55 @@ class Tx_FormhandlerGui_View {
 	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_FormhandlerGui_Configuration $configuration) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;
+	}
+
+	/**
+	 * Resets all internal vars and sets controller and action. Typically called from dispatcher
+	 *
+	 * @param $controllerName
+	 * @param $actionName
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function init($controllerName = '', $actionName = '') {
+		$this->reset();
+
+		$this->setControllerName($controller);
+		$this->setActionName($action);
+	}
+
+	/**
+	 * Resets internal vars
+	 *
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	protected function reset() {
+		if ($this->controllerRunning) {
+			return;
+		}
+
+		$this->renderedContent = '';
+		$this->controllerRunning = false;
+		$this->noRender = false;
+		$this->vars = array();
+
+		$this->viewFile = '';
+		$this->renderMethod = '';
+		$this->actionName = '';
+		$this->controllerName = '';
+	}
+
+	/**
+	 * Assigns a value (To enable $this->view->varName = value as shortcut for assign)
+	 * 
+	 * @param $varName
+	 * @param $value
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function __set($varName, $value) {
+		$this->assign($varName, $value);
 	}
 
 	/**
@@ -87,12 +152,7 @@ class Tx_FormhandlerGui_View {
 		$varName = str_replace(array('$',' ','/','\\'),'',$varName);
 		$name = strval(trim($varName));
 		if (strlen($name) > 0) {
-			if (empty($this->controllerName)) {
-				throw new Exception('No current controller found to assign the variable. Set the controller name first.');
-				return;
-			}
-				
-			$this->vars[$this->controllerName][$name] = $value;
+			$this->vars[$name] = $value;
 		} else {
 			throw new Exception('Name for the assigned variable "'.$name.'" is of the wrong type or contains restricted chars.');
 		}
@@ -113,16 +173,26 @@ class Tx_FormhandlerGui_View {
 	 * @see Tx_FormhandlerGui_Configuration
 	 */
 	public function render($view = NULL) {
+		if ($this->noRender && !$this->controllerRunning) {
+			return $this->renderedContent;
+		}
 
 		if (!$this->prepareRendering($view)) {
 			return "";
 		}
 
 		if ($this->renderMethod == 'VIEWSCRIPT') {
-			return $this->renderViewScript();
+			$content = $this->renderViewScript();
 		} else {
-			return $this->renderTemplate();
+			$content = $this->renderTemplate();
 		}
+
+		if ($this->controllerRunning) {
+			$this->noRender = true;
+			$this->renderedContent .= $content;
+		}
+
+		return $content;
 	}
 
 	/**
@@ -144,7 +214,7 @@ class Tx_FormhandlerGui_View {
 	 */
 	private function renderViewScript() {
 		$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer');
-		return $renderer->render($this->viewFile, $this->vars[$this->controllerName]);
+		return $renderer->render($this->viewFile, $this->vars);
 	}
 
 	/**
@@ -163,7 +233,7 @@ class Tx_FormhandlerGui_View {
 				throw new Exception('Could not autoload the view file. No controller or action defined. Set controller and action name first.');
 				return false;
 			}
-			
+
 			$file = array(
 				'dirname' => ucfirst($this->controllerName), 
 				'filename' => $this->actionName
@@ -237,9 +307,9 @@ class Tx_FormhandlerGui_View {
 	}
 
 	/**
-	 * Set the controller name. This is needed to put variables to 
+	 * Set the controller name. This is needed to put variables to
 	 * the proper key while assigning and to fetch the right view
-	 * 
+	 *
 	 * @param $controllerName
 	 * @return void
 	 * @author Christian Opitz <co@netzelf.de>
@@ -250,12 +320,34 @@ class Tx_FormhandlerGui_View {
 
 	/**
 	 * Set the action name. This is needed  to fetch the right view
-	 * 
+	 *
 	 * @param $actionName
 	 * @return void
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
 	public function setActionName($actionName) {
 		$this->actionName = $actionName;
+	}
+
+	/**
+	 * Sets if the view should be rendered automatically from beyond the controller
+	 *
+	 * @param $render
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function setNoRender($render) {
+		$this->noRender = $render;
+	}
+
+	/**
+	 * Tells the view if the controller is running
+	 *
+	 * @param boolean $status
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function setControllerRunning($status) {
+		$this->controllerRunning = $status;
 	}
 }

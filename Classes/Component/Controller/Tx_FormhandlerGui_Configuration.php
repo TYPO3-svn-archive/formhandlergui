@@ -151,5 +151,11 @@ class Tx_FormhandlerGui_Configuration implements ArrayAccess {
 	public static function getDefaultExtension() {
 		return (self::DEFAULT_RENDERMETHOD == 'VIEWSCRIPT') ? self::DEFAULT_VIEWSCRIPT_EXT : self::DEFAULT_TEMPLATE_EXT;
 	}
+	
+	public static function getControllerClassName($controller) {
+		$controllerClassName = self::getPrefixedPackageKey();
+		$controllerClassName .= '_Controller_'.ucfirst($controller);
+		return $controllerClassName;
+	}
 }
 ?>
