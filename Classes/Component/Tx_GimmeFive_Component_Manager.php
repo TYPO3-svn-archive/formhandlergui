@@ -33,6 +33,8 @@ class Tx_GimmeFive_Component_Manager {
 
 	protected $classFiles;
 	protected $packagePath;
+	
+	protected $includePaths = array();
 
 	protected $componentObjects = array(); // the object cache
 	protected $componentConfigurations = array(); // the configuration cache
@@ -315,9 +317,30 @@ class Tx_GimmeFive_Component_Manager {
 		$classNameParts = explode('_', $className,3);
 		if ($classNameParts[0] === self::PACKAGE_PREFIX) {
 			// TODO The $classFiles should be cached by package key
+			
+			foreach($this->includePaths as $dir) {
+				$temp = array();
+				$temp = $this->buildArrayOfClassFiles($dir);
+				$this->classFiles = array_merge($temp, $this->classFiles);
+			}
+			
 			$this->classFiles = $this->buildArrayOfClassFiles($classNameParts[1]);
 			$classFilePathAndName = isset($this->classFiles[$className]) ? $this->classFiles[$className] : NULL;
 			if (isset($classFilePathAndName) && file_exists($classFilePathAndName)) require_once ($classFilePathAndName);			
+		}
+	}
+	
+	/**
+	 * Adds includePath for autoloading
+	 * 
+	 * @param $path
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function addIncludePath($path) {
+		$path = t3lib_div::getFileAbsFileName($path);
+		if (in_array($path,$this->includePaths)) {
+			$this->includePaths[] = $path;
 		}
 	}
 	
