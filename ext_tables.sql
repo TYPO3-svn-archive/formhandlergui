@@ -18,6 +18,10 @@ CREATE TABLE tx_formhandlergui_forms (
 	debug tinyint(3) DEFAULT '0' NOT NULL,
 	fields text,
 	multistep_forms text,
+	tables varchar(40) DEFAULT '' NOT NULL,
+	auto_mapping tinyint(3) DEFAULT '0' NOT NULL,
+	mapping tinytext,
+	email_conf mediumtext,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

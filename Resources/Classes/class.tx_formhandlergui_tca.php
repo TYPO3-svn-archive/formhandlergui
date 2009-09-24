@@ -43,6 +43,17 @@ class tx_formhandlergui_tca {
 		return 'Spalten';
 	}
 	
+	public function tableSelect($config) {
+		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables();
+		$tables = array_keys($tables);
+		
+		foreach ($tables as $table) {
+			$config['items'][] = array($table, $table);
+		}
+		
+		return $config;
+	}
+	
 	public function fieldTypeSelect($config) {
 		
 		$types = $this->getFieldTypes();

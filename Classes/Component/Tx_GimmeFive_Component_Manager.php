@@ -103,7 +103,10 @@ class Tx_GimmeFive_Component_Manager {
 			$errorMessage = error_get_last();
 			throw new Exception('A parse error ocurred while trying to build a new object of type ' . $className . ' (' . $errorMessage['message'] . '). The evaluated PHP code was: ' . $instruction);
 		}
-		$scope = $this->getComponentScope($componentName, $componentConfiguration);
+		$scope = $class->getConstant('SCOPE');
+		if (empty($scope)) {
+			$scope = $this->getComponentScope($componentName, $componentConfiguration);
+		}
 		switch ($scope) {
 			case 'singleton' :
 				$this->putComponentObject($componentName, $componentObject);

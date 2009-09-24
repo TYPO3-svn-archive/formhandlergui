@@ -20,9 +20,14 @@
 			<label index="tx_formhandlergui_forms.enable_db">Enable DB storage</label>
 			<label index="tx_formhandlergui_forms.debug">Debug</label>
 			<label index="tx_formhandlergui_forms.tabs.fields">Fields</label>
+			<label index="tx_formhandlergui_forms.tabs.db">Database</label>
+			<label index="tx_formhandlergui_forms.tabs.email">Email</label>
+			<label index="tx_formhandlergui_forms.fields">Fields</label>
 			<label index="tx_formhandlergui_forms.rows">Rows</label>
 			<label index="tx_formhandlergui_forms.cols">Columns</label>
-			<label index="tx_formhandlergui_forms.fields">Fields</label>
+			<label index="tx_formhandlergui_forms.tables">Tables</label>
+			<label index="tx_formhandlergui_forms.auto_mapping">Automatic mapping</label>
+			<label index="tx_formhandlergui_forms.email_conf">Email settings</label>
 			<label index="tx_formhandlergui_forms.newField">New field</label>
 			<label index="tx_formhandlergui_fields">Formhandler Fields</label>
 			<label index="tx_formhandlergui_fields.field_type.I.0">Please select</label>

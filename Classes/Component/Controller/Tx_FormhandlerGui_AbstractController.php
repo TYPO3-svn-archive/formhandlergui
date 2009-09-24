@@ -56,13 +56,15 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	 */
 	public function __construct(
 	Tx_GimmeFive_Component_Manager $componentManager,
-	Tx_FormhandlerGui_Configuration $configuration,
-	Tx_FormhandlerGui_View $view
+	Tx_FormhandlerGui_Configuration $configuration
 	) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;
-		$this->view = $view;
 	}
+	
+	public function setView($viewClass) {
+		$this->view = $viewClass;
+	} 
 
 	/**
 	 * Sets the internal attribute "langFile"
@@ -135,8 +137,12 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	 */
 	private function _forward($action, $controller = null, $params = null) {
 		$this->setRunning(false);
-
-		$this->view->setActionName($action);
+		
+		if (is_object($this->view)) {
+			if (method_exists($this->view, 'setActionName')) {
+				$this->view->setActionName($action);
+			}
+		}
 
 		if ($controller === null) {
 			$this->run($action, $params);
@@ -158,8 +164,8 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	 */
 	private function _redirect($action, $controller = null, $params = null) {
 		$this->setRunning(false);
-		$this->view->reset();
-		$this->_forward($action,$controller,$params);
+		$dispatcher = $this->componentManager->getComponent('Tx_FormhandlerGui_Dispatcher');
+		$dispatcher->dispatch($controller,$action,$params);
 	}
 
 	/**
@@ -170,7 +176,11 @@ abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerG
 	 */
 	private function setRunning($status) {
 		$this->controllerRunning = $status;
-		$this->view->setControllerRunning($status);
+		if (is_object($this->view)) {
+			if (method_exists($this->view, 'setActionName')) {
+				$this->view->setControllerRunning($status);
+			}
+		}
 	}
 }
 ?>

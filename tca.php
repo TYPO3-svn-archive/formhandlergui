@@ -168,22 +168,71 @@ $TCA['tx_formhandlergui_forms'] = array (
 				'minitems' => 0,
 				'maxitems' => 100,
 			)
+		),
+		'tables' => array (		
+			'exclude' => 1,		
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.tables',		
+			'config' => array (
+				'type' => 'select',
+				'itemsProcFunc' => 'tx_formhandlergui_tca->tableSelect',	
+				'size' => 10,	
+				'maxitems' => 10,
+			)
+		),
+		'auto_mapping' => array (		
+			'exclude' => 1,		
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.auto_mapping',		
+			'config' => array (
+				'type' => 'check',
+				'default' => 1
+			)
+		),
+		'mapping' => array (		
+			'config' => array (
+				'type' => 'passthrough',
+			)
+		),
+		'email_conf' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.email_conf',		
+			'config' => array (
+				'type' => 'flex',
+				'ds' => array (
+					'default' => 'FILE:EXT:formhandlergui/Resources/Flex/email_conf.xml',
+				),
+			)
 		)
 	),
 	'types' => array (
 		'0' => array('showitem' => '
 				hidden;;1;;1-1-1, title;;2;;2-2-2, enable_email, enable_db, debug,
-				--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.tabs.fields, rows;;;;1-1-1, cols, fields'),
+				--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.tabs.fields, fields'),
 		
 		'1' => array('showitem' => '
-				hidden;;1;;1-1-1, title;;2;;2-2-2, multistep_forms, enable_email, enable_db, debug,
-				--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.tabs.fields, rows;;;;1-1-1, cols, fields')
+				hidden;;1;;1-1-1, title;;2;;2-2-2, multistep_forms, enable_email, enable_db, debug'),
+		'0-db' => array('showitem' => ',
+				--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.tabs.db, tables;;;;1-1-1, auto_mapping;;;;2-2-2'),
+		'0-email' => array('showitem' => ',
+				--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.tabs.email, email_conf;;;;1-1-1
+		')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'fe_group'),
-		'2' => array('showitem' => 'type,method,prefix','canNotCollapse' => 1)
+		'2' => array('showitem' => 'type,method,prefix','canNotCollapse' => 1),
+		'3' => array('showitem' => 'auto_mapping','canNotCollapse' => 1)
 	)
 );
+$TCA['tx_formhandlergui_forms']['types']['0']['showitem'] .=
+$TCA['tx_formhandlergui_forms']['types']['0-db']['showitem'];
+
+$TCA['tx_formhandlergui_forms']['types']['1']['showitem'] .=
+$TCA['tx_formhandlergui_forms']['types']['0-db']['showitem'];
+
+$TCA['tx_formhandlergui_forms']['types']['0']['showitem'] .=
+$TCA['tx_formhandlergui_forms']['types']['0-email']['showitem'];
+
+$TCA['tx_formhandlergui_forms']['types']['1']['showitem'] .=
+$TCA['tx_formhandlergui_forms']['types']['0-email']['showitem'];
 
 $TCA['tx_formhandlergui_fields'] = array (
 	'ctrl' => $TCA['tx_formhandlergui_fields']['ctrl'],
@@ -260,6 +309,14 @@ $TCA['tx_formhandlergui_fields'] = array (
 				'maxitems' => 1,
 			)
 		),
+		'field_title' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.title',		
+			'config' => array (
+				'type' => 'input',	
+				'size' => '30',
+			)
+		),
 		'field_label' => array (		
 			'exclude' => 1,		
 			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.label',		
@@ -306,7 +363,7 @@ $TCA['tx_formhandlergui_fields'] = array (
 	),
 	'types' => array (
 '0' => array('showitem' => 
-'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, field_type, field_label;;;;2-2-2'),
+'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden, field_type, field_title;;;;2-2-2, field_label;;;;3-3-3'),
 '0-langConf' => array('showitem' => ',
 --div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.tabs.lang_conf, lang_conf'),
 '0-fieldConf' => array('showitem' => ',
@@ -315,7 +372,7 @@ $TCA['tx_formhandlergui_fields'] = array (
 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, fe_group')	
 ),
 'palettes' => array (
-'1' => array('showitem' => 'fe_group'),
+'1' => array('showitem' => 'field_title','canNotCollapse' => 1),
 '2' => array('showitem' => 'lang_conf','canNotCollapse' => 1),
 '3' => array('showitem' => 'field_conf','canNotCollapse' => 1)
 )

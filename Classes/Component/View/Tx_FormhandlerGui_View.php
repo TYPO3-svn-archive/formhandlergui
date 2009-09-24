@@ -23,6 +23,12 @@
 class Tx_FormhandlerGui_View {
 
 	/**
+	 * The scope of this class (read by component manager, could be moved to docblock)
+	 * @var string
+	 */
+	const SCOPE = 'prototype';
+	
+	/**
 	 * The assigned values
 	 * @var array
 	 */
@@ -102,8 +108,8 @@ class Tx_FormhandlerGui_View {
 	public function init($controllerName = '', $actionName = '') {
 		$this->reset();
 
-		$this->setControllerName($controller);
-		$this->setActionName($action);
+		$this->setControllerName($controllerName);
+		$this->setActionName($actionName);
 	}
 
 	/**

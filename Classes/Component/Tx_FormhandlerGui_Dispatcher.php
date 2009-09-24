@@ -48,6 +48,7 @@ class Tx_FormhandlerGui_Dispatcher {
 		
 		$viewClass->init($controller, $action);
 		
+		$controllerClass->setView($viewClass);
 		$controllerClass->run($action, $params);
 		
 		return $viewClass->render();
