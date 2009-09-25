@@ -214,7 +214,7 @@ class Tx_FormhandlerGui_View {
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
 	private function renderViewScript() {
-		$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer');
+		$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer_Script');
 		return $renderer->render($this->viewFile, $this->vars);
 	}
 

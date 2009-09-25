@@ -20,7 +20,7 @@
  * @subpackage	Tx_FormhandlerGui
  * @version $Id$
  */
-class Tx_FormhandlerGui_View_Renderer extends Tx_FormhandlerGui_View_Helpers {
+class Tx_FormhandlerGui_View_Renderer_Script extends Tx_FormhandlerGui_View_Helpers {
 	
 	/**
 	 * Extracts the vars so that they can be accessed as usual PHP-Variables
