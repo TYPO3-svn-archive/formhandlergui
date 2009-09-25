@@ -30,58 +30,16 @@ class Tx_FormhandlerGui_Configuration implements ArrayAccess {
 	const PACKAGE_KEY = 'FormhandlerGui';
 	
 	/**
-	 * ViewScript directory
-	 * @var string
+	 * @var Tx_FormhandlerGui_Configuration_View
 	 */
-	const DIRECTORY_VIEWSCRIPTS = 'Resources/ViewScripts/';
+	public $view;
 	
-	/**
-	 * Template directory
-	 * @var string
-	 */
-	const DIRECTORY_TEMPLATES = 'Resources/Template/';
-	
-	/**
-	 * The default rendering method - can be VIEWSCRIPT or TEMPLATE
-	 * Can be overruled by passing a file extension to the view 
-	 * render method
-	 * @see Tx_FormhandlerGui_View::render
-	 * @var string
-	 */
-	const DEFAULT_RENDERMETHOD = 'VIEWSCRIPT';
-	
-	/**
-	 * The file extensions that can be used as templates. If you pass
-	 * a file with one of these extensions the view will render the
-	 * template file from the template directory
-	 * @var string
-	 */
-	const TEMPLATE_EXTENSIONS = 'html,htm,tmpl';
-	
-	/**
-	 * The file extensions that can be used as viewScripts. If you pass
-	 * a file with one of these extensions the view will render the
-	 * viewScript file from the viewScript directory
-	 * @var string
-	 */
-	const VIEWSCRIPT_EXTENSIONS = 'php,phtml';
-	
-	/**
-	 * This is used to get the right file for the default rendering method
-	 * @var string
-	 */
-	const DEFAULT_TEMPLATE_EXT = 'html';
-	
-	/**
-	 * This is used to get the right file for the default rendering method
-	 * @var string
-	 */
-	const DEFAULT_VIEWSCRIPT_EXT = 'phtml';
-
 	protected $setup;
 
-	public function __construct() {
+	public function __construct(Tx_FormhandlerGui_Configuration_View $viewConfig) {
 		$this->setup = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$this->getPrefixedPackageKey() . '.'];
+		
+		$this->view = $viewConfig;
 	}
 
 	public function merge($setup) {
@@ -138,18 +96,6 @@ class Tx_FormhandlerGui_Configuration implements ArrayAccess {
 
 	public static function getPackagePath() {
 		return t3lib_extMgm::extPath(strtolower(self::PACKAGE_KEY));
-	}
-
-	public static function getViewScriptPath() {
-		return self::getPackagePath().self::DIRECTORY_VIEWSCRIPTS;
-	}
-
-	public static function getTemplatePath() {
-		return self::getPackagePath().Tx_GimmeFive_Component_Manager::DIRECTORY_TEMPLATES;
-	}
-
-	public static function getDefaultExtension() {
-		return (self::DEFAULT_RENDERMETHOD == 'VIEWSCRIPT') ? self::DEFAULT_VIEWSCRIPT_EXT : self::DEFAULT_TEMPLATE_EXT;
 	}
 	
 	public static function getControllerClassName($controller) {

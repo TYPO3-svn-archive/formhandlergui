@@ -132,7 +132,7 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 	 * @return void
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
-	private function _forward($action, $controller = null, $params = null) {
+	protected function _forward($action, $controller = null, $params = null) {
 		$this->setRunning(false);
 		
 		if (is_object($this->view)) {

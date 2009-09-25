@@ -19,12 +19,17 @@
  * @version $Id$
  */
 class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionController {
+	
 	public function init() {
-		$this->view->setNoRender(true);
+		//$this->view->setNoRender(true);
 	}
 	
 	public function indexAction() {
-		echo 'Huhuha';
+		$this->_forward('form');
+	}
+	
+	public function formAction() {
+		$this->view->formAction = 'hallo';
 	}
 }
 ?>

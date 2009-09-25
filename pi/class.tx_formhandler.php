@@ -85,7 +85,12 @@ class tx_formhandler extends tslib_pibase {
 		$GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.'] = $setup;
 
 		$dispatcher = t3lib_div::makeInstance('Tx_FormhandlerGui_Dispatcher');
-		$dispatcher->dispatch();
+		$cm = Tx_GimmeFive_Component_Manager::getInstance();
+		
+		$config = $cm->getComponent('Tx_FormhandlerGui_Configuration');
+		$config->view->setRenderMethod('TEMPLATE');
+		
+		$result = $dispatcher->dispatch();
 
 		return $result;
 	}

@@ -48,7 +48,7 @@ class Tx_FormhandlerGui_View {
 	private $renderMethod;
 
 	/**
-	 * @var Tx_FormhandlerGui_Configuration
+	 * @var Tx_FormhandlerGui_Configuration_View
 	 */
 	private $config;
 
@@ -87,7 +87,7 @@ class Tx_FormhandlerGui_View {
 	 * @return void
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
-	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_FormhandlerGui_Configuration $configuration) {
+	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_FormhandlerGui_Configuration_View $configuration) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;
 	}
@@ -229,82 +229,52 @@ class Tx_FormhandlerGui_View {
 	public function prepareRendering($view=null) {
 		if ($view !== null) {
 			$file = pathinfo($view);
-		}else{
+			$this->renderMethod = $this->config->getRenderMethodByExtension($file['extension']);
+		}else{			
+			$this->renderMethod = $this->config->getRenderMethod();
+			
+			if ($this->config->getViewFile() !== NULL) {
+				$this->viewFile = $this->config->getViewFile();
+				return true;
+			} 
+			
 			if (empty($this->controllerName) || empty($this->actionName)) {
 				throw new Exception('Could not autoload the view file. No controller or action defined. Set controller and action name first.');
 				return false;
 			}
-
+			
 			$file = array(
 				'dirname' => ucfirst($this->controllerName), 
 				'filename' => $this->actionName
 			);
 		}
-
-		if (empty($file['extension'])) {
-			$file['extension'] = $this->config->getDefaultExtension();
-			$this->renderMethod = Tx_FormhandlerGui_Configuration::DEFAULT_RENDERMETHOD;
-		}else{
-			if ($this->isTemplate($file['extension'])) {
-				$this->renderMethod = 'TEMPLATE';
-			}elseif ($this->isViewScript($file['extension'])) {
-				$this->renderMethod = 'VIEWSCRIPT';
-			}else{
-				throw new Exception('The requested view '.$view.' is of the wrong file type ('.
-				Tx_FormhandlerGui_Configuration::VIEWSCRIPT_EXTENSIONS.','.
-				Tx_FormhandlerGui_Configuration::TEMPLATE_EXTENSIONS.' allowed)'
-				);
-			}
-
-		}
-
-		if ($this->renderMethod == 'VIEWSCRIPT') {
-			$path = $this->config->getViewScriptPath();
-		}else{
-			$path = $this->config->getTemplatePath();
-		}
-
-		$viewFile = rtrim($path,"\\,/");
+		
+		$path = $this->config->getRenderPath($this->renderMethod);
+		
+		$viewRawFile = rtrim($path,"\\,/");
 
 		if (!empty($file['dirname'])) {
-			$viewFile .= '/'.ltrim($file['dirname'],"\\,/");
+			$viewRawFile .= '/'.ltrim($file['dirname'],"\\,/");
 		}
 
-		$viewFile .= '/'.$file['filename'];
-		$viewFile .= '.'.$file['extension'];
-
-		if (!@file_exists($viewFile)) {
-			throw new Exception('Could not retrieve template file: "'.$viewFile.'" (does not exist)');
-			return false;
+		$viewRawFile .= '/'.$file['filename'];
+		
+		if (empty($file['extension'])) {
+			$extensions = $this->config->getRenderExtensions($this->renderMethod);
+		}else{
+			$extensions = array($file['extension']);
 		}
-
-		$this->viewFile = $viewFile;
-
-		return true;
-	}
-
-	/**
-	 * Tests if a file extension is of template
-	 *
-	 * @param $ext
-	 * @return boolean True if it is a template
-	 * @author Christian Opitz <co@netzelf.de>
-	 */
-	private function isTemplate($ext) {
-		$extensions = explode(',', Tx_FormhandlerGui_Configuration::TEMPLATE_EXTENSIONS);
-		return in_array($ext,$extensions);
-	}
-
-	/**
-	 * Tests if a file extension is of viewScript
-	 *
-	 * @param $ext
-	 * @return boolean True if it is a viewScript
-	 * @author Christian Opitz <co@netzelf.de>
-	 */
-	private function isViewScript($ext) {
-		$extensions = explode(',', Tx_FormhandlerGui_Configuration::VIEWSCRIPT_EXTENSIONS);
-		return in_array($ext,$extensions);
+		
+		foreach ($extensions as $ext) {
+			$viewFile = $viewRawFile.'.'.$ext;
+			if (@file_exists($viewFile)) {
+				$this->viewFile = $viewFile;
+				return true;
+			}
+		}
+		
+		throw new Exception('Could not retrieve template file: "'.$viewFile.'" (does not exist)');
+		return false;
 	}
 
 	/**
