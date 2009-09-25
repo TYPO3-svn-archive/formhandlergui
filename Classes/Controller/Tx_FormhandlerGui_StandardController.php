@@ -24,7 +24,7 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 	}
 	
 	public function indexAction() {
-		echo 'Huhu';
+		echo 'Huhuha';
 	}
 }
 ?>
