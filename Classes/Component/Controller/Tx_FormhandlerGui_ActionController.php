@@ -22,7 +22,7 @@
  * @abstract
  * @version $Id$
  */
-abstract class Tx_FormhandlerGui_AbstractController /*implements Tx_FormhandlerGui_ControllerInterface*/ {
+abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui_ControllerInterface*/ {
 
 	/**
 	 * @var Tx_GimmeFive_Component_Manager

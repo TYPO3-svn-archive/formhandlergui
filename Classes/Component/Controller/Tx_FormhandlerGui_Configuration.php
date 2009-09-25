@@ -154,7 +154,7 @@ class Tx_FormhandlerGui_Configuration implements ArrayAccess {
 	
 	public static function getControllerClassName($controller) {
 		$controllerClassName = self::getPrefixedPackageKey();
-		$controllerClassName .= '_Controller_'.ucfirst($controller);
+		$controllerClassName .= '_'.ucfirst($controller).'Controller';
 		return $controllerClassName;
 	}
 }

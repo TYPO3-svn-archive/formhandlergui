@@ -80,11 +80,11 @@ class tx_formhandler extends tslib_pibase {
 		$this->pi_USER_INT_obj = 1;
 		
 		$setup['settings.']['predef.']['default.']['formValuesPrefix'] = 'formhandlergui';
-		var_dump($setup);
+		//var_dump($setup);
 
 		$GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.'] = $setup;
 
-		$result = parent::main($content, $setup);
+		//$result = parent::main($content, $setup);
 
 		return $result;
 	}

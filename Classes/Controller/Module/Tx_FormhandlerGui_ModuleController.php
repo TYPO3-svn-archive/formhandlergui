@@ -19,7 +19,7 @@
  * @subpackage	Tx_FormhandlerGui
  * @version $Id$
  */
-class Tx_FormhandlerGui_Controller_Forms extends Tx_FormhandlerGui_AbstractController {
+class Tx_FormhandlerGui_ModuleController extends Tx_FormhandlerGui_ActionController {
 
 	/**
 	 * init method of the controller
