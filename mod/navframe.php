@@ -93,7 +93,7 @@ class tx_formhandlergui_navframe extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		
 		//$this->doc->setModuleTemplate('templates/alt_db_navframe.html');
-		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('formhandlergui') . 'Resources/Template/Module/alt_db_navframe.html');
+		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('formhandlergui') . 'Resources/Templates/Module/alt_db_navframe.html');
 		
 		$this->doc->backPath = $BACK_PATH;
 		

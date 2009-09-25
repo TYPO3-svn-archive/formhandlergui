@@ -30,7 +30,7 @@
  */
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Controller/Tx_Formhandler_Dispatcher.php');
+require_once (t3lib_extMgm::extPath('formhandlergui') . 'Classes/Component/Tx_FormhandlerGui_Dispatcher.php');
 
 /**
  * This is a clone of class.tx_formhandler.php - we smuggled it in with
@@ -84,7 +84,8 @@ class tx_formhandler extends tslib_pibase {
 
 		$GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.'] = $setup;
 
-		//$result = parent::main($content, $setup);
+		$dispatcher = t3lib_div::makeInstance('Tx_FormhandlerGui_Dispatcher');
+		$dispatcher->dispatch();
 
 		return $result;
 	}
