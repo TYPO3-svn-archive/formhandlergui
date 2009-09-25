@@ -9,10 +9,7 @@
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
- *
- * $Id$
- *                                                                        */
+ * Public License for more details.                                       */
 
 /**
  * Abstract class for Controller Classes used by FormhandlerGui

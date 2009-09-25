@@ -105,10 +105,12 @@ class Tx_GimmeFive_Component_Manager {
 			$errorMessage = error_get_last();
 			throw new Exception('A parse error ocurred while trying to build a new object of type ' . $className . ' (' . $errorMessage['message'] . '). The evaluated PHP code was: ' . $instruction);
 		}
-		$scope = $class->getConstant('SCOPE');
-		if (empty($scope)) {
+		
+		$scope = $this->getClassScope($class);
+		if ($scope === NULL) {
 			$scope = $this->getComponentScope($componentName, $componentConfiguration);
 		}
+		
 		switch ($scope) {
 			case 'singleton' :
 				$this->putComponentObject($componentName, $componentObject);
@@ -262,6 +264,21 @@ class Tx_GimmeFive_Component_Manager {
 	protected function getComponentScope($componentName, $componentConfiguration) {
 		$scope = !is_null($componentConfiguration['scope']) ? $componentConfiguration['scope'] : 'singleton';		
 		return $scope;
+	}
+	
+	/**
+	 * Tryes to read a scope-tag from docblock
+	 *
+	 * @param ReflectionClass $reflectionClass
+	 * @return string scope or NULL
+	 */
+	protected function getClassScope($reflectionClass) {
+		$comment = $reflectionClass->getDocComment();
+		preg_match('/^.*@.*scope.*(\w+?).*$/Uim', $comment, $tag);
+		if (strlen(trim($tag[1])) > 0) {
+			return $tag[1];
+		}
+		return NULL;
 	}
 	
 	/**

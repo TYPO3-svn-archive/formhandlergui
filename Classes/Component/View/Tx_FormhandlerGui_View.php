@@ -16,17 +16,12 @@
  * After hours of thinking - finally this class that for sure doesn't meet
  * the ideals of FLOW3 - but: it's simple and it works
  *
+ * @scope prototype
  * @package	TYPO3
  * @subpackage	Tx_FormhandlerGui
  * @version $Id$
  */
 class Tx_FormhandlerGui_View {
-
-	/**
-	 * The scope of this class (read by component manager, could be moved to docblock)
-	 * @var string
-	 */
-	const SCOPE = 'prototype';
 	
 	/**
 	 * The assigned values
