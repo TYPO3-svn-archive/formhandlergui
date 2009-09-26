@@ -83,6 +83,10 @@ class Tx_FormhandlerGui_Configuration_View {
 	}
 
 	public function getRenderMethod() {
+		if (isset($this->viewFile)) {
+			$file = pathinfo($this->viewFile);
+			return $this->getRenderMethodByExtension($file['extension']);
+		}
 		return (isset($this->renderMethod)) ? $this->renderMethod : self::DEFAULT_RENDERMETHOD;
 	}
 	

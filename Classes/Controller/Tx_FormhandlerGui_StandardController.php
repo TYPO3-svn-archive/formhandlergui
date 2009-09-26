@@ -30,6 +30,7 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 	
 	public function formAction() {
 		$this->view->formAction = 'hallo';
+		$this->view->formFields = 'Yes';
 	}
 }
 ?>

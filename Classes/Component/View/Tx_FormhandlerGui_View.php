@@ -183,10 +183,12 @@ class Tx_FormhandlerGui_View {
 		}
 
 		if ($this->renderMethod == 'VIEWSCRIPT') {
-			$content = $this->renderViewScript();
+			$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer_Script');
 		} else {
-			$content = $this->renderTemplate();
+			$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer_Template');
 		}
+		
+		$content = $renderer->render($this->viewFile, $this->vars);
 
 		if ($this->controllerRunning) {
 			$this->noRender = true;
@@ -194,28 +196,6 @@ class Tx_FormhandlerGui_View {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Renders a html-template with markers
-	 *
-	 * @return string The rendered template
-	 * @author Christian Opitz <co@netzelf.de>
-	 */
-	private function renderTemplate() {
-		//TODO: Make a function that renders the TYPO way
-		return '';
-	}
-
-	/**
-	 * Calls the viewScript renderer
-	 *
-	 * @return string the rendered viewScript
-	 * @author Christian Opitz <co@netzelf.de>
-	 */
-	private function renderViewScript() {
-		$renderer = $this->componentManager->getComponent('Tx_FormhandlerGui_View_Renderer_Script');
-		return $renderer->render($this->viewFile, $this->vars);
 	}
 
 	/**
@@ -235,7 +215,13 @@ class Tx_FormhandlerGui_View {
 			
 			if ($this->config->getViewFile() !== NULL) {
 				$this->viewFile = $this->config->getViewFile();
-				return true;
+				if (@file_exists($this->viewFile)) {
+					return true;
+				}else{
+					throw new Exception('View file '.$this->viewFile.' not found.');
+					unset($this->viewFile);
+					return false;
+				}
 			} 
 			
 			if (empty($this->controllerName) || empty($this->actionName)) {
