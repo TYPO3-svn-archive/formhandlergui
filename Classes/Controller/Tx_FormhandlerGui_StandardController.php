@@ -37,7 +37,7 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 	public function formAction() {
 		$forms = $this->formRepository->findByPid(2);
 		foreach($forms as $form) {
-			var_dump($form->getFields());
+			//var_dump($form->getFields());
 		}
 		$this->view->formAction = 'hallo';
 		$this->view->formFields = 'Yes';

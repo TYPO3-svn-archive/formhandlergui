@@ -22,7 +22,7 @@
 class Tx_FormhandlerGui_ObjectFactory {
 	
 	/**
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_FormhandlerGui_ComponentManager
 	 */
 	private $componentManager;
 	
@@ -32,7 +32,7 @@ class Tx_FormhandlerGui_ObjectFactory {
 	private $config;
 	
 	public function __construct(
-	Tx_GimmeFive_Component_Manager $componentManager,
+	Tx_FormhandlerGui_ComponentManager $componentManager,
 	Tx_FormhandlerGui_Configuration $configuration) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;

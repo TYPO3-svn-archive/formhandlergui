@@ -87,11 +87,11 @@ class Tx_FormhandlerGui_Configuration implements ArrayAccess {
 	}
 
 	public static function getPrefixedPackageKey() {
-		return Tx_GimmeFive_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY;
+		return Tx_FormhandlerGui_ComponentManager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY;
 	}
 
 	public static function getPrefixedPackageKeyLowercase() {
-		return strtolower(Tx_GimmeFive_Component_Manager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY);
+		return strtolower(Tx_FormhandlerGui_ComponentManager::PACKAGE_PREFIX . '_' . self::PACKAGE_KEY);
 	}
 
 	public static function getPackagePath() {

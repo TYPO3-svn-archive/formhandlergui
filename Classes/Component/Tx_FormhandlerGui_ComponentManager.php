@@ -19,9 +19,9 @@
  * @package	TYPO3
  * @subpackage	Tx_GimmeFive
  */
-class Tx_GimmeFive_Component_Manager {
+class Tx_FormhandlerGui_ComponentManager {
 	const PACKAGE_PREFIX = 'Tx';
-	const THIS_PACKAGE_KEY = 'GimmeFive';
+	const THIS_PACKAGE_KEY = 'FormhandlerGui';
 	const DIRECTORY_CLASSES = 'Classes/';
 	const DIRECTORY_CONFIGURATION = 'Configuration/';
 	const DIRECTORY_LANGUAGES = 'Resources/Language/';
@@ -42,7 +42,7 @@ class Tx_GimmeFive_Component_Manager {
 		
 	public static function getInstance() {
         if (self::$instance === NULL) {
-            self::$instance = new Tx_GimmeFive_Component_Manager();
+            self::$instance = new Tx_FormhandlerGui_ComponentManager();
         }
         return self::$instance;
     }

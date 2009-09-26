@@ -53,7 +53,7 @@ class Tx_FormhandlerGui_View {
 	private $config;
 
 	/**
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_FormhandlerGui_ComponentManager
 	 */
 	private $componentManager;
 
@@ -87,7 +87,7 @@ class Tx_FormhandlerGui_View {
 	 * @return void
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
-	public function __construct(Tx_GimmeFive_Component_Manager $componentManager, Tx_FormhandlerGui_Configuration_View $configuration) {
+	public function __construct(Tx_FormhandlerGui_ComponentManager $componentManager, Tx_FormhandlerGui_Configuration_View $configuration) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;
 	}

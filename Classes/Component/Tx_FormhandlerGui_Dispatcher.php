@@ -1,5 +1,5 @@
 <?php
-require_once (t3lib_extMgm::extPath('formhandlergui') . 'Classes/Component/Tx_GimmeFive_Component_Manager.php');
+require_once (t3lib_extMgm::extPath('formhandlergui') . 'Classes/Component/Tx_FormhandlerGui_ComponentManager.php');
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -24,7 +24,7 @@ require_once (t3lib_extMgm::extPath('formhandlergui') . 'Classes/Component/Tx_Gi
 class Tx_FormhandlerGui_Dispatcher {
 	
 	/**
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_FormhandlerGui_ComponentManager
 	 */
 	private $componentManager;
 	
@@ -57,7 +57,7 @@ class Tx_FormhandlerGui_Dispatcher {
 		$action = ($action === null) ? $this->action : $action;
 		$params = ($params === null) ? $this->params : $params;
 		
-		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
+		$this->componentManager = Tx_FormhandlerGui_ComponentManager::getInstance();
 		
 		$controllerClassName = Tx_FormhandlerGui_Configuration::getControllerClassName($controller);
 		

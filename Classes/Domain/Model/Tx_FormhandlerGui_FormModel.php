@@ -44,7 +44,7 @@ class Tx_FormhandlerGui_FormModel extends Tx_FormhandlerGui_Model {
 	 */
 	public function setFields($fieldList) {
 		$fields = explode(',',$fieldList);
-		$cm = Tx_GimmeFive_Component_Manager::getInstance();
+		$cm = Tx_FormhandlerGui_ComponentManager::getInstance();
 		$fieldsRepository = $cm->getComponent('Tx_FormhandlerGui_FieldRepository');
 		
 		$this->fields = $fieldsRepository->findByUid($fields);

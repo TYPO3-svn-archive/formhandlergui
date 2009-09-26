@@ -22,7 +22,7 @@
 abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui_ControllerInterface*/ {
 
 	/**
-	 * @var Tx_GimmeFive_Component_Manager
+	 * @var Tx_FormhandlerGui_ComponentManager
 	 */
 	protected $componentManager;
 
@@ -50,14 +50,14 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 	/**
 	 * Just puting the objects to the instance
 	 *
-	 * @param Tx_GimmeFive_Component_Manager $componentManager
+	 * @param Tx_FormhandlerGui_ComponentManager $componentManager
 	 * @param Tx_FormhandlerGui_Configuration $configuration
 	 * @param Tx_FormhandlerGui_View $view
 	 * @return void
 	 * @author Christian Opitz
 	 */
 	public function __construct(
-	Tx_GimmeFive_Component_Manager $componentManager,
+	Tx_FormhandlerGui_ComponentManager $componentManager,
 	Tx_FormhandlerGui_Configuration $configuration
 	) {
 		$this->componentManager = $componentManager;

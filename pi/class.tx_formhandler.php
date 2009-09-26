@@ -68,6 +68,12 @@ class tx_formhandler extends tslib_pibase {
 	public $pi_checkCHash = true;
 
 	public $conf;
+	
+	/**
+	 * The prefix that indicates that a predefined form is a formhandlerGui-form
+	 * @var string
+	 */
+	private $predefPrefix = 'Tx_FormhandlerGui_';
 
 	/**
 	 * preloads our setup and calls Tx_Formhandler_Dispatcher::main
@@ -76,20 +82,31 @@ class tx_formhandler extends tslib_pibase {
 	 * @see typo3conf/ext/formhandler/Classes/Controller/Tx_Formhandler_Dispatcher#main()
 	 */
 	public function main($content, $setup) {
-
 		$this->pi_USER_INT_obj = 1;
+		$this->pi_initPIflexForm();
 		
-		$setup['settings.']['predef.']['default.']['formValuesPrefix'] = 'formhandlergui';
-		//var_dump($setup);
-
-		$GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.'] = $setup;
-
-		$dispatcher = t3lib_div::makeInstance('Tx_FormhandlerGui_Dispatcher');
+		$predef = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'predefined', 'sDEF');
 		
-		$dispatcher->setParams(array('id' => 2));
+		if (strpos($predef, $this->predefPrefix) === 0) {
+			$formId = str_replace($this->predefPrefix, '', $predef);
+			
+			$dispatcher = t3lib_div::makeInstance('Tx_FormhandlerGui_Dispatcher');
 		
-		$result = $dispatcher->dispatch();
-
-		return $result;
+			$dispatcher->setParams(array(
+				'formId' => $formId
+			));
+			
+			$result = $dispatcher->dispatch();
+		}
+		
+		require_once (t3lib_extMgm::extPath('formhandler') . 'Classes/Controller/Tx_Formhandler_Dispatcher.php');
+		$formhandlerDispatcher = t3lib_div::makeInstance('Tx_Formhandler_Dispatcher');
+		$formhandlerDispatcher->cObj = $this->cObj;
+		return $formhandlerDispatcher->main(&$content, &$setup);
+		
+		/*$setup['settings.']['predef.']['default.']['formValuesPrefix'] = 'formhandlergui';
+		$GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.'] = $setup;*/
+		
+		//return $result;
 	}
 }
