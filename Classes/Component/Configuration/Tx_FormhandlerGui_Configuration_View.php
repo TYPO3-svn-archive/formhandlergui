@@ -39,7 +39,7 @@ class Tx_FormhandlerGui_Configuration_View {
 	 * @see Tx_FormhandlerGui_View::render
 	 * @var string
 	 */
-	const DEFAULT_RENDERMETHOD = 'VIEWSCRIPT';
+	const DEFAULT_RENDERMETHOD = 'TEMPLATE';
 
 	/**
 	 * The file extensions that can be used as templates. If you pass

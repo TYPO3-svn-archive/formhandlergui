@@ -29,6 +29,7 @@ class Tx_FormhandlerGui_ModuleController extends Tx_FormhandlerGui_ActionControl
 	 */
 	public function init() {
 		//$this->view->setNoRender(true);
+		$this->config->view->setRenderMethod('VIEWSCRIPT');
 	}
 	
 	/**

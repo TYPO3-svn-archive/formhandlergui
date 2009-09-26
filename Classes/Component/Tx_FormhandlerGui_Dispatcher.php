@@ -74,14 +74,35 @@ class Tx_FormhandlerGui_Dispatcher {
 		return $viewClass->render();
 	}
 	
+	/**
+	 * Sets a controller to call
+	 * 
+	 * @param string $controller The controller name
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
 	public function setController($controller) {
 		$this->controller = $controller;
 	}
 	
+	/**
+	 * Sets a action to call
+	 *
+	 * @param string $action The action name
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
 	public function setAction($action) {
 		$this->action = $action;
 	}
 	
+	/**
+	 * Sets params for the controller
+	 *
+	 * @param array $params Key value pairs of parameters
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
 	public function setParams(array $params) {
 		$this->params = $params;
 	}

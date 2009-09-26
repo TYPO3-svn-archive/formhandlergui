@@ -45,7 +45,7 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 	/**
 	 * @var stdClass
 	 */
-	public $params;
+	private $params;
 
 	/**
 	 * Just puting the objects to the instance
@@ -62,7 +62,9 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 	) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;
+		$this->params = new stdClass();
 		
+		//Look up for repositorys to inject (no account for inject-tag yet)
 		$class = new ReflectionClass(get_class($this));
 		$properties = $class->getProperties();
 		foreach ($properties as $property) {
@@ -72,8 +74,6 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 				$this->$propName = $componentManager->getComponent($repo);
 			}
 		}
-		
-		$this->params = new stdClass();
 	}
 	
 	/**
