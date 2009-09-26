@@ -41,6 +41,11 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 	 * @var boolean
 	 */
 	private $controllerRunning;
+	
+	/**
+	 * @var stdClass
+	 */
+	public $params;
 
 	/**
 	 * Just puting the objects to the instance
@@ -67,11 +72,47 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 				$this->$propName = $componentManager->getComponent($repo);
 			}
 		}
+		
+		$this->params = new stdClass();
 	}
 	
-	public function setView($viewClass) {
+	/**
+	 * Sets the view for the controller
+	 *
+	 * @param Tx_FormhandlerGui_View $viewClass
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function setView(Tx_FormhandlerGui_View $viewClass) {
 		$this->view = $viewClass;
-	} 
+	}
+	
+	/**
+	 * Sets the parameters for the controller
+	 *
+	 * @param array $params Key value pairs of params
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function setParams($params = array()) {
+		foreach ($params as $name => $value) {
+			$param = strval($name);
+			if (strlen($name)) {
+				$this->params->$name = $value;
+			}
+		}
+	}
+	
+	/**
+	 * Returns a parameter by its name
+	 *
+	 * @param string $name The name of the parameter
+	 * @return mixed The value of the parameter
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function getParam($name) {
+		return $this->params->$name;
+	}
 
 	/**
 	 * Sets the internal attribute "langFile"

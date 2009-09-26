@@ -29,6 +29,21 @@ class Tx_FormhandlerGui_Dispatcher {
 	private $componentManager;
 	
 	/**
+	 * @var string
+	 */
+	private $controller = 'standard';
+	
+	/**
+	 * @var string
+	 */
+	private $action = 'index';
+	
+	/**
+	 * @var array
+	 */
+	private $params = array();
+	
+	/**
 	 * Prepare controller and view and render it
 	 *
 	 * @param string $controller The controller that has to be fetched
@@ -37,12 +52,17 @@ class Tx_FormhandlerGui_Dispatcher {
 	 * @return string The rendered view
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
-	public function dispatch($controller='standard', $action='index', $params=null) {
+	public function dispatch($controller=null, $action=null, $params=null) {
+		$controller = ($controller === null) ? $this->controller : $controller;
+		$action = ($action === null) ? $this->action : $action;
+		$params = ($params === null) ? $this->params : $params;
+		
 		$this->componentManager = Tx_GimmeFive_Component_Manager::getInstance();
 		
 		$controllerClassName = Tx_FormhandlerGui_Configuration::getControllerClassName($controller);
 		
 		$controllerClass = $this->componentManager->getComponent($controllerClassName);
+		$controllerClass->setParams($params);
 		
 		$viewClass = $this->componentManager->getComponent('Tx_FormhandlerGui_View');
 		
@@ -52,6 +72,18 @@ class Tx_FormhandlerGui_Dispatcher {
 		$controllerClass->run($action, $params);
 		
 		return $viewClass->render();
+	}
+	
+	public function setController($controller) {
+		$this->controller = $controller;
+	}
+	
+	public function setAction($action) {
+		$this->action = $action;
+	}
+	
+	public function setParams(array $params) {
+		$this->params = $params;
 	}
 }
 ?>

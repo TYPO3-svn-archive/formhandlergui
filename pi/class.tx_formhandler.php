@@ -90,6 +90,8 @@ class tx_formhandler extends tslib_pibase {
 		$config = $cm->getComponent('Tx_FormhandlerGui_Configuration');
 		$config->view->setRenderMethod('TEMPLATE');
 		
+		$dispatcher->setParams(array('id' => 2));
+		
 		$result = $dispatcher->dispatch();
 
 		return $result;
