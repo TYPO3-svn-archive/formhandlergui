@@ -13,34 +13,35 @@
  *                                                                        */
 
 /**
- * 
+ * The basic model class. Uses the magic function __call to automatically
+ * wire DB-rows or arrays to a model while object factoring or later.
+ *
  * @package TYPO3
  * @subpackage FormhandlerGui
  * @version $Id$
  */
-class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionController {
+abstract class Tx_FormhandlerGui_Model {
 	
 	/**
-	 * @var Tx_FormhandlerGui_FormRepository
-	 * @inject
+	 * Magic function to get/set vars in model (Not called when get/set method
+	 * exists in model)
+	 * 
+	 * @param $func
+	 * @param $arguments
+	 * @return mixed Depending on the called function
+	 * @author Christian Opitz <co@netzelf.de>
 	 */
-	protected $formRepository;
-	
-	public function init() {
-		//$this->view->setNoRender(true);
-	}
-	
-	public function indexAction() {
-		$this->_forward('form');
-	}
-	
-	public function formAction() {
-		$forms = $this->formRepository->findByPid(2);
-		foreach($forms as $form) {
-			var_dump($form->getFields());
+	public function __call($func, $arguments) {
+		$parts = Tx_FormhandlerGui_Func::explodeCamelCase($func, 1);
+		
+		if ($parts[0] == 'get') {
+			$var = Tx_FormhandlerGui_Func::implodeCamelCase(array_slice($parts,1));
+			return $this->$var;
 		}
-		$this->view->formAction = 'hallo';
-		$this->view->formFields = 'Yes';
+		if ($parts[0] == 'set') {
+			$var = Tx_FormhandlerGui_Func::implodeCamelCase(array_slice($parts,1));
+			$this->$var = $arguments[0];
+		}
 	}
 }
 ?>

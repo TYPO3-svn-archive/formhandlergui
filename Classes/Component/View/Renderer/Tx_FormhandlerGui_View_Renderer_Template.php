@@ -38,6 +38,8 @@ class Tx_FormhandlerGui_View_Renderer_Template {
 	 */
 	private $markers = array();
 	
+	private $subParts = array();
+	
 	public function __construct() {
 		$this->parser = t3lib_div::makeInstance('t3lib_parsehtml');
 	}
@@ -63,16 +65,7 @@ class Tx_FormhandlerGui_View_Renderer_Template {
 	 */
 	private function treatCamelCase($string) {
 	  
-		$parts = array();
- 
-  		$chars = str_split($string);
-  		$pos = 0;
- 		foreach ($chars as $i => $char) {
-	    	if (ctype_upper($char) && $i > 0) {
-	      		$pos++;
-			}
-			$parts[$pos] .= strtoupper($char);
-		}
+		$parts = Tx_FormhandlerGui_Func::explodeCamelCase($string,2);
  
 		return implode('_',$parts);
 	}

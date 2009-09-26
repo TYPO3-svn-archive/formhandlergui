@@ -57,6 +57,16 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 	) {
 		$this->componentManager = $componentManager;
 		$this->config = $configuration;
+		
+		$class = new ReflectionClass(get_class($this));
+		$properties = $class->getProperties();
+		foreach ($properties as $property) {
+			$propName = $property->getName();
+			if (strpos($propName,'Repository') > 2) {
+				$repo = $this->config->getPrefixedPackageKey().'_'.ucfirst($propName);
+				$this->$propName = $componentManager->getComponent($repo);
+			}
+		}
 	}
 	
 	public function setView($viewClass) {

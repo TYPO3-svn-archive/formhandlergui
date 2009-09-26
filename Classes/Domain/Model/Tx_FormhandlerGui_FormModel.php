@@ -13,34 +13,41 @@
  *                                                                        */
 
 /**
+ * The model for forms table
  * 
+ * @scope prototype
  * @package TYPO3
  * @subpackage FormhandlerGui
  * @version $Id$
  */
-class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionController {
+class Tx_FormhandlerGui_FormModel extends Tx_FormhandlerGui_Model {
+
+	/**
+	 * The form identifier.
+	 * @var string
+	 * @identity
+	 */
+	protected $identifier = 'uid';
 	
 	/**
-	 * @var Tx_FormhandlerGui_FormRepository
-	 * @inject
+	 * The fields contained in this form
+	 * @var array<Tx_FormhandlerGui_FieldModel>
 	 */
-	protected $formRepository;
+	protected $fields = array();
 	
-	public function init() {
-		//$this->view->setNoRender(true);
-	}
-	
-	public function indexAction() {
-		$this->_forward('form');
-	}
-	
-	public function formAction() {
-		$forms = $this->formRepository->findByPid(2);
-		foreach($forms as $form) {
-			var_dump($form->getFields());
-		}
-		$this->view->formAction = 'hallo';
-		$this->view->formFields = 'Yes';
+	/**
+	 * Gets the fields for this form from the fields repository
+	 * 
+	 * @param string $fieldList uid-list of fields
+	 * @return void
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function setFields($fieldList) {
+		$fields = explode(',',$fieldList);
+		$cm = Tx_GimmeFive_Component_Manager::getInstance();
+		$fieldsRepository = $cm->getComponent('Tx_FormhandlerGui_FieldRepository');
+		
+		$this->fields = $fieldsRepository->findByUid($fields);
 	}
 }
 ?>

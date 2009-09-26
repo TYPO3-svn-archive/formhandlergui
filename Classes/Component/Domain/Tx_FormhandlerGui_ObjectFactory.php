@@ -13,34 +13,46 @@
  *                                                                        */
 
 /**
- * 
+ * Creates the model objects
+ *
  * @package TYPO3
  * @subpackage FormhandlerGui
  * @version $Id$
  */
-class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionController {
+class Tx_FormhandlerGui_ObjectFactory {
 	
 	/**
-	 * @var Tx_FormhandlerGui_FormRepository
-	 * @inject
+	 * @var Tx_GimmeFive_Component_Manager
 	 */
-	protected $formRepository;
+	private $componentManager;
 	
-	public function init() {
-		//$this->view->setNoRender(true);
+	/**
+	 * @var Tx_FormhandlerGui_Configuration
+	 */
+	private $config;
+	
+	public function __construct(
+	Tx_GimmeFive_Component_Manager $componentManager,
+	Tx_FormhandlerGui_Configuration $configuration) {
+		$this->componentManager = $componentManager;
+		$this->config = $configuration;
 	}
 	
-	public function indexAction() {
-		$this->_forward('form');
-	}
-	
-	public function formAction() {
-		$forms = $this->formRepository->findByPid(2);
-		foreach($forms as $form) {
-			var_dump($form->getFields());
+	/**
+	 * Instanciates a model class and calls the (mostly magic) set[FieldName]-methods
+	 * 
+	 * @param string $model The model class
+	 * @param array $row The result from a DB-query or other key-value-pairs
+	 * @return <$model> The entity object
+	 * @author Christian Opitz <co@netzelf.de>
+	 */
+	public function &create($model, $row = array()) {
+		$object = $this->componentManager->getComponent($model, $row);
+		foreach ($row as $key => $val) {
+			$func = 'set'.Tx_FormhandlerGui_Func::tableFieldCamelCase($key, true);
+			$object->$func($val);
 		}
-		$this->view->formAction = 'hallo';
-		$this->view->formFields = 'Yes';
+		return $object;
 	}
 }
 ?>

@@ -13,34 +13,12 @@
  *                                                                        */
 
 /**
- * 
+ * The fields repository
+ *
  * @package TYPO3
  * @subpackage FormhandlerGui
  * @version $Id$
  */
-class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionController {
-	
-	/**
-	 * @var Tx_FormhandlerGui_FormRepository
-	 * @inject
-	 */
-	protected $formRepository;
-	
-	public function init() {
-		//$this->view->setNoRender(true);
-	}
-	
-	public function indexAction() {
-		$this->_forward('form');
-	}
-	
-	public function formAction() {
-		$forms = $this->formRepository->findByPid(2);
-		foreach($forms as $form) {
-			var_dump($form->getFields());
-		}
-		$this->view->formAction = 'hallo';
-		$this->view->formFields = 'Yes';
-	}
+class Tx_FormhandlerGui_FieldRepository extends Tx_FormhandlerGui_Repository {
 }
 ?>
