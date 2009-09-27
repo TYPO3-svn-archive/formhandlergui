@@ -35,12 +35,47 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 	}
 	
 	public function formAction() {
-		$forms = $this->formRepository->findByPid(2);
-		foreach($forms as $form) {
-			//var_dump($form->getFields());
+		$formId = $this->getParam('formId');
+		$this->form = $form = $this->formRepository->findOneByUid($formId);
+		
+		$fields = $form->getFields();
+		$formFields = '';
+		foreach ($fields as $field) {
+			 $formFields .= $this->getField($field);
 		}
-		$this->view->formAction = 'hallo';
-		$this->view->formFields = 'Yes';
+		$this->view->formFields = $formFields;
+		
+		$this->view->formMethod = $form->getMethod();
+	}
+	
+	private function getField($field) {
+		$fieldType = $field->getFieldType();
+		$fieldConf = $this->params->fieldConf[$fieldType];
+
+		if (empty($fieldConf['class'])) {
+			if (!empty($fieldConf['template'])) {
+				$templateFile = t3lib_div::getFileAbsFileName($fieldConf['template']);
+				return t3lib_div::getURL($templateFile);
+			}
+			return '';
+		}
+		
+		@include_once(t3lib_div::getFileAbsFileName($fieldConf['class']));
+			
+		$view = $this->componentManager->getComponent('Tx_FormhandlerGui_View');
+		if (empty($fieldConf['template'])) {
+			$view->setNoRender(true);
+		}else{
+			$view->config->setViewFile($fieldConf['template']);
+		}
+		$controller = $this->componentManager->getComponent($fieldType);
+		$controller->setView($view);
+		$controller->setParams(array(
+			'field' => $field,
+			'form' => $this->form
+		));
+		$controller->run();
+		return $view->render();
 	}
 }
 ?>

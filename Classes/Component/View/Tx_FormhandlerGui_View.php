@@ -50,7 +50,7 @@ class Tx_FormhandlerGui_View {
 	/**
 	 * @var Tx_FormhandlerGui_Configuration_View
 	 */
-	private $config;
+	public $config;
 
 	/**
 	 * @var Tx_FormhandlerGui_ComponentManager

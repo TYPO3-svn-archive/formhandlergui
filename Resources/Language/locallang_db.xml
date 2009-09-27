@@ -33,7 +33,7 @@
 			<label index="tx_formhandlergui_fields.field_type.I.0">Please select</label>
 			<label index="tx_formhandlergui_fields.field_type">Field type</label>
 			<label index="tx_formhandlergui_fields.title">Field title</label>
-			<label index="tx_formhandlergui_fields.label">Label</label>
+			<label index="tx_formhandlergui_fields.name">Field name</label>
 			<label index="tx_formhandlergui_fields.tabs.lang_conf">Language settings</label>
 			<label index="tx_formhandlergui_fields.tabs.field_conf">Field settings</label>
 			<label index="tx_formhandlergui_fields.validators">Validations</label>

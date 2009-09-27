@@ -85,12 +85,12 @@ class tx_formhandlergui_tca {
 		
 		foreach ($types as $id => $conf) {
 			$TCA['types'][$id] = $TCA['types']['0'];
-			if ($conf['fieldConf'] !== false) {
+			if (!empty($conf['fieldConf'])) {
 				$TCA['types'][$id]['showitem'] .= $TCA['types']['0-fieldConf']['showitem'];
 				
 				$TCA['columns']['field_conf']['config']['ds'][$id] = 'FILE:'.$conf['fieldConf'];
 			}
-			if ($conf['langConf'] !== false) {
+			if (!empty($conf['langConf'])) {
 				$TCA['types'][$id]['showitem'] .= $TCA['types']['0-langConf']['showitem'];
 				
 				$TCA['columns']['lang_conf']['config']['ds'][$id] = 'FILE:'.$conf['langConf'];

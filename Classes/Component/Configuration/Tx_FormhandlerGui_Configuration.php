@@ -36,10 +36,8 @@ class Tx_FormhandlerGui_Configuration implements ArrayAccess {
 	
 	protected $setup;
 
-	public function __construct(Tx_FormhandlerGui_Configuration_View $viewConfig) {
+	public function __construct() {
 		$this->setup = $GLOBALS['TSFE']->tmpl->setup['plugin.'][$this->getPrefixedPackageKey() . '.'];
-		
-		$this->view = $viewConfig;
 	}
 
 	public function merge($setup) {

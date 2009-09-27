@@ -5,13 +5,15 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSCla
 $path = 'EXT:formhandlergui/Classes/Fields/tx_formhandlergui_%field%.php:tx_formhandlergui_%field%';
 
 $fields = array(
-	'tx_formhandlergui_text' => array(
+	'Tx_FormhandlerGui_Text' => array(
 		'title' 	=> 'LLL:EXT:formhandlergui/Resources/Language/fields.xml:text.title',
-		'langConf'	=> 'EXT:formhandlergui/Resources/Fields/tx_formhandlergui_text.lang.xml',
-		'fieldConf'	=> false
+		'langConf'	=> 'EXT:formhandlergui/Resources/Fields/Tx_FormhandlerGui_Text.lang.xml',
+		'fieldConf'	=> 'EXT:formhandlergui/Resources/Fields/Tx_FormhandlerGui_Text.field.xml',
+		'class'		=> 'EXT:formhandlergui/Resources/Fields/Tx_FormhandlerGui_Text.php',
+		'template'	=> 'EXT:formhandlergui/Resources/Fields/Tx_FormhandlerGui_Text.html'
 	)
 );
 
 foreach ($fields as $field) {
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fieldTypes'][] = $field; //str_replace('%field%',$field,$path);
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['formhandlergui']['fieldTypes'] = $fields; //str_replace('%field%',$field,$path);
 }

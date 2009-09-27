@@ -59,10 +59,11 @@ class tx_dynaflex_formhandlergui extends tx_dynaflex_formhandler
 		);
 		
 		$ts = parent::loadTS($pageUid);
+		$ts['plugin.']['Tx_Formhandler.']['settings.']['predef.'] = $ts['plugin.']['tx_formhandler.']['settings.']['predef.'];
 		
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$id = 'tx_formhandlergui'.$row['uid'].'.';
-			$name = $row['title'];
+			$id = 'Tx_FormhandlerGui_'.$row['uid'].'.';
+			$name = 'FGui:'.$row['title'];
 			if (intval($row['type']) == 1) {
 				$name .= ' (MultiStep)';
 			}

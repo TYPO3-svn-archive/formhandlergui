@@ -1,0 +1,28 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>0</langDisable>
+	</meta>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<label>
+				<TCEforms>
+					<label>LLL:EXT:formhandlergui/Resources/Language/fields.xml:label</label>
+					<config>
+						<type>input</type>
+						<size>30</size>
+					</config>
+				</TCEforms>
+			</label>
+			<default>
+				<TCEforms>
+					<label>LLL:EXT:formhandlergui/Resources/Language/fields.xml:text.default</label>
+					<config>
+						<type>input</type>
+						<size>30</size>
+					</config>
+				</TCEforms>
+			</default>
+		</el>
+	</ROOT>
+</T3DataStructure>

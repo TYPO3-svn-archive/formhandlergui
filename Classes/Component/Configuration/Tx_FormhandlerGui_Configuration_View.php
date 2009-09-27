@@ -13,7 +13,7 @@
  *                                                                        */
 
 /**
- *
+ * @scope prototype
  * @package TYPO3
  * @subpackage FormhandlerGui
  * @version $Id$
@@ -93,11 +93,11 @@ class Tx_FormhandlerGui_Configuration_View {
 	public function getRenderMethodByExtension($ext) {
 		$extensions = explode(',', self::VIEWSCRIPT_EXTENSIONS);
 		if (in_array($ext,$extensions)) {
-			return 'TEMPLATE';
+			return 'VIEWSCRIPT';
 		}
 		$extensions = explode(',', self::TEMPLATE_EXTENSIONS);
 		if (in_array($ext,$extensions)) {
-			return 'VIEWSCRIPT';
+			return 'TEMPLATE';
 		}
 		throw new Exception('The requested view-file with extension '.$ext.' is of the wrong file type ('.
 		self::VIEWSCRIPT_EXTENSIONS.','.

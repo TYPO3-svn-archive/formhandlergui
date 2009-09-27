@@ -6,7 +6,14 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="label">Label</label>
 			<label index="text.title">Text field</label>
+			<label index="text.default">Default value</label>
+			<label index="text.none">None</label>
+			<label index="text.fromDb">From database (depends on mapping settings in form)</label>
+			<label index="text.fromLang">As defined in language settings</label>
+			<label index="text.size">Size</label>
+			<label index="text.cssClass">CSS class</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title">Formhandler</label>

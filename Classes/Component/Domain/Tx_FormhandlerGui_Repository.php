@@ -90,7 +90,6 @@ class Tx_FormhandlerGui_Repository {
 		}else{
 			$whereClause = $where."='".strval($is)."'";
 		}
-		echo $limit;
 		
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
@@ -108,7 +107,8 @@ class Tx_FormhandlerGui_Repository {
 	}
 	
 	public function findOneBy($where, $is) {
-		return $this->findBy($where, $is, '1');
+		$result = $this->findBy($where, $is, '1');
+		return $result[0];
 	}
 }
 ?>

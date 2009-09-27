@@ -63,9 +63,10 @@ $TCA['tx_formhandlergui_forms'] = array (
 			'config' => array (
 				'type' => 'select',
 				'items' => array (
-					array('LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.method.I.0', '0'),
-					array('LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.method.I.1', '1'),
+					array('LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.method.I.0', 'POST'),
+					array('LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.method.I.1', 'GET'),
 				),
+				'default' => 'POST',
 				'size' => 1,	
 				'maxitems' => 1,
 			)
@@ -118,7 +119,7 @@ $TCA['tx_formhandlergui_forms'] = array (
 			'config' => array (
 				'type' => 'select',	
 				'foreign_table' => 'tx_formhandlergui_fields',
-				'foreign_table_where' => 'ORDER BY tx_formhandlergui_fields.field_label',	
+				'foreign_table_where' => 'ORDER BY tx_formhandlergui_fields.field_title',	
 				'size' => 6,	
 				'minitems' => 0,
 				'maxitems' => 100,	
@@ -241,37 +242,6 @@ $TCA['tx_formhandlergui_fields'] = array (
 	),
 	'feInterface' => $TCA['tx_formhandlergui_fields']['feInterface'],
 	'columns' => array (
-		'sys_language_uid' => array (		
-			'exclude' => 1,
-			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
-			'config' => array (
-				'type'                => 'select',
-				'foreign_table'       => 'sys_language',
-				'foreign_table_where' => 'ORDER BY sys_language.title',
-				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-				)
-			)
-		),
-		'l10n_parent' => array (		
-			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude'     => 1,
-			'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-			'config'      => array (
-				'type'  => 'select',
-				'items' => array (
-					array('', 0),
-				),
-				'foreign_table'       => 'tx_formhandlerdev_fields',
-				'foreign_table_where' => 'AND tx_formhandlerdev_fields.pid=###CURRENT_PID### AND tx_formhandlerdev_fields.sys_language_uid IN (-1,0)',
-			)
-		),
-		'l10n_diffsource' => array (		
-			'config' => array (
-				'type' => 'passthrough'
-			)
-		),
 		'hidden' => array (		
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
@@ -306,7 +276,7 @@ $TCA['tx_formhandlergui_fields'] = array (
 				),
 				'itemsProcFunc' => 'tx_formhandlergui_tca->fieldTypeSelect',	
 				'size' => 1,	
-				'maxitems' => 1,
+				'maxitems' => 1
 			)
 		),
 		'field_title' => array (		
@@ -317,9 +287,9 @@ $TCA['tx_formhandlergui_fields'] = array (
 				'size' => '30',
 			)
 		),
-		'field_label' => array (		
+		'field_name' => array (		
 			'exclude' => 1,		
-			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.label',		
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.name',		
 			'config' => array (
 				'type' => 'input',	
 				'size' => '30',	
@@ -362,20 +332,20 @@ $TCA['tx_formhandlergui_fields'] = array (
 		),
 	),
 	'types' => array (
-'0' => array('showitem' => 
-'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden, field_type, field_title;;;;2-2-2, field_label;;;;3-3-3'),
-'0-langConf' => array('showitem' => ',
---div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.tabs.lang_conf, lang_conf'),
-'0-fieldConf' => array('showitem' => ',
---div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.tabs.field_conf, field_conf'),
-'0-access' => array('showitem' => ',
---div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, fe_group')	
-),
-'palettes' => array (
-'1' => array('showitem' => 'field_title','canNotCollapse' => 1),
-'2' => array('showitem' => 'lang_conf','canNotCollapse' => 1),
-'3' => array('showitem' => 'field_conf','canNotCollapse' => 1)
-)
+		'0' => array('showitem' => 
+			'hidden, field_title, field_type;;;;2-2-2, field_name'),
+		'0-langConf' => array('showitem' => ',
+			--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.tabs.lang_conf, lang_conf'),
+		'0-fieldConf' => array('showitem' => ',
+			--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_fields.tabs.field_conf, field_conf'),
+		'0-access' => array('showitem' => ',
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, fe_group')	
+	),
+	'palettes' => array (
+		'1' => array('showitem' => 'field_title','canNotCollapse' => 1),
+		'2' => array('showitem' => 'lang_conf','canNotCollapse' => 1),
+		'3' => array('showitem' => 'field_conf','canNotCollapse' => 1)
+	)
 );
 
 //Now add the field types - can be done the same way from another extension 

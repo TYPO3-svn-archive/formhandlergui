@@ -14,7 +14,7 @@ $MLANG['default']['tabs_images']['tab'] = '../Resources/Images/icon_forms.gif';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:formhandlergui/Resources/Language/locallang_mod.xml';
 
 $MCONF['menuItems'] = array(
-	'module' => 'func.module',
+	'module' => 'func.forms',
 	'report' => 'func.reports',
 	'settings' => 'func.settings'
 );

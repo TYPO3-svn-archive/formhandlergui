@@ -29,7 +29,7 @@ class Tx_FormhandlerGui_ModuleController extends Tx_FormhandlerGui_ActionControl
 	 */
 	public function init() {
 		//$this->view->setNoRender(true);
-		$this->config->view->setRenderMethod('VIEWSCRIPT');
+		$this->view->config->setRenderMethod('VIEWSCRIPT');
 	}
 	
 	/**
@@ -39,7 +39,7 @@ class Tx_FormhandlerGui_ModuleController extends Tx_FormhandlerGui_ActionControl
 	 * @author Christian Opitz <co@netzelf.de>
 	 */
 	public function indexAction() {
-		$this->view->test = 'Huhu';
+		$this->view->test = 'Please select a form from the navigation frame.';
 		//$this->view->assign('test','Hallo');
 	}
 }

@@ -45,7 +45,7 @@ abstract class Tx_FormhandlerGui_ActionController /*implements Tx_FormhandlerGui
 	/**
 	 * @var stdClass
 	 */
-	private $params;
+	protected $params;
 
 	/**
 	 * Just puting the objects to the instance
