@@ -48,7 +48,7 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 		
 		if ($form->autoMapping && $form->enableDb) {
 			$tables = strval($form->getTables());
-			if (strlen($tables) > 0) {
+			if (!empty($tables)) {
 				$tables = explode(',', $tables);
 				foreach ($tables as $table) {
 					$dbConf = array(
