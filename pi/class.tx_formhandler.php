@@ -101,9 +101,7 @@ class tx_formhandler extends tslib_pibase {
 			$predefObj = $setupRepository->getSetup();
 			$predefObj['templateFile'] = 'TEXT';
 			$predefObj['templateFile.']['value'] = $template;
-			
-			var_dump($predefObj);
-			
+			//var_dump($predefObj);
 			$setup['settings.']['predef.'][$predef] = $predefObj;
 			$GLOBALS['TSFE']->tmpl->setup['plugin.']['Tx_Formhandler.']['settings.']['predef.'][$predef] = $predefObj;
 		}

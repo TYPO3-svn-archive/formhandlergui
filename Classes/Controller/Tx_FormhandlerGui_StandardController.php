@@ -52,12 +52,20 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 				$tables = explode(',', $tables);
 				foreach ($tables as $table) {
 					$dbConf = array(
-						'table.' => $table,
+						'table' => $table,
 						'fields.' => $this->automap($fields, $table)
 					);
 					$this->setupRepository->addFinisher('Tx_Formhandler_Finisher_DB', $dbConf);
 				}
 			}
+		}
+		
+		//$this->setupRepository->addValue('formValuesPrefix', $form->prefix);
+		$this->setupRepository->addValue('debug', $form->debug);
+		
+		if (!empty($form->redirect)) {
+			$conf = array('redirectPage' => $form->redirect);
+			$this->setupRepository->addFinisher('Tx_Formhandler_Finisher_Redirect', $conf);
 		}
 		
 		$formFields = '';
@@ -105,7 +113,7 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 		foreach ($fields as $field) {
 			$name = $field->getFieldName();
 			if (!empty($tableFields[$name])) {
-				$mappingFields[$name.'.']['mapping.'] = $name;
+				$mappingFields[$name.'.']['mapping'] = $name;
 			}
 		}
 		return $mappingFields;

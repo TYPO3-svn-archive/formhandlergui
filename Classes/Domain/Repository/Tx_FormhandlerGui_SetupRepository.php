@@ -25,10 +25,22 @@ class Tx_FormhandlerGui_SetupRepository {
 	
 	public function addFinisher($class, $conf) {
 		$this->setup['finishers.'][] = array(
-			'class.' => $class,
+			'class' => $class,
 			'config.'=> $conf
 		);
-		var_dump($this->setup);
+	}
+	
+	public function addValue($path, $value, $delimiter = "/") {
+		$path = trim($path,$delimiter);
+		$pathArray = explode($delimiter, $path);
+		$path = implode("'.'.']['", $pathArray);
+		
+		$dot = (is_array($value)) ? '.' : '';
+		$eval = '$confArray[\''.$path.$dot.'\'] = $value;';
+		$confArray = array();
+		eval($eval);
+		
+		$this->setup = t3lib_div::array_merge_recursive_overrule($confArray, $this->setup);
 	}
 	
 	public function getSetup() {
