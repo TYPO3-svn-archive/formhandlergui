@@ -20,11 +20,18 @@
  */
 class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionController {
 	
+	private $predefSetup = array();
+	
 	/**
 	 * @var Tx_FormhandlerGui_FormRepository
 	 * @inject
 	 */
 	protected $formRepository;
+	
+	/**
+	 * @var Tx_FormhandlerGui_SetupRepository
+	 */
+	protected $setupRepository;
 	
 	public function init() {
 		//$this->view->setNoRender(true);
@@ -37,8 +44,22 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 	public function formAction() {
 		$formId = $this->getParam('formId');
 		$this->form = $form = $this->formRepository->findOneByUid($formId);
+		$this->fields = $fields = $form->getFields();
 		
-		$fields = $form->getFields();
+		if ($form->autoMapping && $form->enableDb) {
+			$tables = strval($form->getTables());
+			if (strlen($tables) > 0) {
+				$tables = explode(',', $tables);
+				foreach ($tables as $table) {
+					$dbConf = array(
+						'table.' => $table,
+						'fields.' => $this->automap($fields, $table)
+					);
+					$this->setupRepository->addFinisher('Tx_Formhandler_Finisher_DB', $dbConf);
+				}
+			}
+		}
+		
 		$formFields = '';
 		foreach ($fields as $field) {
 			 $formFields .= $this->getField($field);
@@ -76,6 +97,18 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 		));
 		$controller->run();
 		return $view->render();
+	}
+	
+	private function automap($fields, $table) {
+		$tableFields = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
+		$mappingFields = array();
+		foreach ($fields as $field) {
+			$name = $field->getFieldName();
+			if (!empty($tableFields[$name])) {
+				$mappingFields[$name.'.']['mapping.'] = $name;
+			}
+		}
+		return $mappingFields;
 	}
 }
 ?>

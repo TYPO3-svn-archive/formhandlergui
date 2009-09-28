@@ -62,6 +62,9 @@ class Tx_FormhandlerGui_ComponentManager {
 	 * @author adapted for TYPO3v4 by Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	public function getComponent($componentName) {
+		if (get_class($this) == $componentName) {
+			return $this;
+		}
 		if ($this->componentObjectExists($componentName)) {
 			$componentObject = $this->componentObjects[$componentName];
 		} else {

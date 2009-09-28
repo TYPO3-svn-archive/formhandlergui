@@ -100,6 +100,26 @@ $TCA['tx_formhandlergui_forms'] = array (
 				'type' => 'check',
 			)
 		),
+		'redirect' => array (
+			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.redirect',
+			"config" => Array (
+				"type"     => "input",
+				"size"     => "15",
+				"max"      => "255",
+				"checkbox" => "",
+				"eval"     => "trim",
+				"wizards"  => array(
+					"_PADDING" => 2,
+					"link"     => array(
+						"type"         => "popup",
+						"title"        => "Link",
+						"icon"         => "link_popup.gif",
+						"script"       => "browse_links.php?mode=wizard",
+						"JSopenParams" => "height=300,width=500,status=0,menubar=0,scrollbars=1"
+					)
+				)
+			)
+		),
 		'rows' => array(
 			'label' => 'LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.rows',
 			'config' => array (
@@ -206,7 +226,7 @@ $TCA['tx_formhandlergui_forms'] = array (
 	),
 	'types' => array (
 		'0' => array('showitem' => '
-				hidden;;1;;1-1-1, title;;2;;2-2-2, enable_email, enable_db, debug,
+				hidden;;1;;1-1-1, title;;2;;2-2-2, enable_email, enable_db, debug, redirect,
 				--div--;LLL:EXT:formhandlergui/Resources/Language/locallang_db.xml:tx_formhandlergui_forms.tabs.fields, fields'),
 		
 		'1' => array('showitem' => '

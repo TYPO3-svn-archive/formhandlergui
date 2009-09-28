@@ -16,6 +16,7 @@ CREATE TABLE tx_formhandlergui_forms (
 	enable_email tinyint(3) DEFAULT '0' NOT NULL,
 	enable_db tinyint(3) DEFAULT '0' NOT NULL,
 	debug tinyint(3) DEFAULT '0' NOT NULL,
+	redirect tinytext,
 	fields text,
 	multistep_forms text,
 	tables varchar(40) DEFAULT '' NOT NULL,

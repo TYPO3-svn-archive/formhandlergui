@@ -19,6 +19,7 @@
 			<label index="tx_formhandlergui_forms.enable_email">Email results</label>
 			<label index="tx_formhandlergui_forms.enable_db">Enable DB storage</label>
 			<label index="tx_formhandlergui_forms.debug">Debug</label>
+			<label index="tx_formhandlergui_forms.redirect">Redirect after submission</label>
 			<label index="tx_formhandlergui_forms.tabs.fields">Fields</label>
 			<label index="tx_formhandlergui_forms.tabs.db">Database</label>
 			<label index="tx_formhandlergui_forms.tabs.email">Email</label>
