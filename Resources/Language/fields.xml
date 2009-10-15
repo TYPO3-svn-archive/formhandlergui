@@ -7,13 +7,24 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="label">Label</label>
-			<label index="text.title">Text field</label>
+			<label index="text.title">Text input</label>
 			<label index="text.default">Default value</label>
 			<label index="text.none">None</label>
 			<label index="text.fromDb">From database (depends on mapping settings in form)</label>
 			<label index="text.fromLang">As defined in language settings</label>
 			<label index="text.size">Size</label>
 			<label index="text.cssClass">CSS class</label>
+			<label index="textarea.title">Textarea</label>
+			<label index="textarea.cols">Columns</label>
+			<label index="textarea.rows">Rows</label>
+			<label index="select.title">Select</label>
+			<label index="select.source">Options source</label>
+			<label index="select.fromLang">From language settings</label>
+			<label index="select.options">Options</label>
+			<label index="select.optionValues">Option values</label>
+			<label index="checkbox.title">Checkbox</label>
+			<label index="submit.title">Submit button</label>
+			<label index="submit.value">Value</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title">Formhandler</label>

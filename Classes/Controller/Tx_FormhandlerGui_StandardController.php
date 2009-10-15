@@ -104,7 +104,9 @@ class Tx_FormhandlerGui_StandardController extends Tx_FormhandlerGui_ActionContr
 			'form' => $this->form
 		));
 		$controller->run();
-		return $view->render();
+		
+		$langConf = $field->getLangConf();
+		return '<dt>'.$langConf->label.'</dt><dd>'.$view->render().'</dd>';
 	}
 	
 	private function automap($fields, $table) {

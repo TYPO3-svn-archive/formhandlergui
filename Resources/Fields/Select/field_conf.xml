@@ -1,0 +1,47 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<source>
+				<TCEforms>
+					<label>LLL:EXT:formhandlergui/Resources/Language/fields.xml:select.source</label>
+					<config>
+						<type>select</type>
+						<size>1</size>
+						<items>
+							<numIndex index="0" type="array">
+								<numIndex index="0">LLL:EXT:formhandlergui/Resources/Language/fields.xml:select.fromLang</numIndex>
+								<numIndex index="1">lang</numIndex>
+							</numIndex>
+							<numIndex index="1" type="array">
+								<numIndex index="0">LLL:EXT:formhandlergui/Resources/Language/fields.xml:text.fromDb</numIndex>
+								<numIndex index="1">db</numIndex>
+							</numIndex>
+						</items>
+					</config>
+				</TCEforms>
+			</source>
+			<size>
+				<TCEforms>
+					<label>LLL:EXT:formhandlergui/Resources/Language/fields.xml:text.size</label>
+					<config>
+						<type>input</type>
+						<size>15</size>
+					</config>
+				</TCEforms>
+			</size>
+			<cssClass>
+				<TCEforms>
+					<label>LLL:EXT:formhandlergui/Resources/Language/fields.xml:text.cssClass</label>
+					<config>
+						<type>input</type>
+						<size>15</size>
+					</config>
+				</TCEforms>
+			</cssClass>
+		</el>
+	</ROOT>
+</T3DataStructure>
